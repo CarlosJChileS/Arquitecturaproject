@@ -27,7 +27,8 @@ app.use('/notifications', notificationsRouter);
 app.use('/auth', authRouter);
 
 // Send React app for any other route
-app.get('*', (req, res) => {
+// Use middleware to handle all unmatched routes and serve the front-end
+app.use((req, res) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
