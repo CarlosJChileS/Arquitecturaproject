@@ -1,4 +1,7 @@
 const express = require('express');
+const app = express();
+app.use(express.json());
+
 const router = express.Router();
 
 // In-memory notifications store for demo
@@ -15,5 +18,14 @@ router.post('/', (req, res) => {
   notifications.push(note);
   res.status(201).json(note);
 });
+
+app.use('/', router);
+
+if (require.main === module) {
+  const PORT = process.env.PORT || 3002;
+  app.listen(PORT, () => {
+    console.log(`Notifications service running on port ${PORT}`);
+  });
+}
 
 module.exports = router;

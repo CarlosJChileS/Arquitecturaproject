@@ -1,4 +1,7 @@
 const express = require('express');
+const app = express();
+app.use(express.json());
+
 const router = express.Router();
 
 // In-memory courses store for demo
@@ -16,5 +19,14 @@ router.post('/', (req, res) => {
   courses.push(course);
   res.status(201).json(course);
 });
+
+app.use('/', router);
+
+if (require.main === module) {
+  const PORT = process.env.PORT || 3004;
+  app.listen(PORT, () => {
+    console.log(`Products service running on port ${PORT}`);
+  });
+}
 
 module.exports = router;
