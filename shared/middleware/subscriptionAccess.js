@@ -1,5 +1,5 @@
 // Simple middleware to check subscription
-const subscriptions = require('../modules/subscriptions').subscriptions;
+const subscriptions = require('../../modules/subscriptions').subscriptions;
 
 module.exports = function (req, res, next) {
   const userId = parseInt(req.header('x-user-id'));
