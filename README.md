@@ -8,7 +8,7 @@ Node.js proof of concept that exposes various feature modules and a React front-
 ```
 api-gateway/
     index.js                # Express entry point
-    public/                 # React front-end (moved from `frontend`)
+    public/                 # React front-end
 core/
     domain/
     application/
@@ -26,7 +26,7 @@ docker/
 ```
 
 - **api-gateway/** hosts the Express application and serves the different feature modules.
-- **public/** inside `api-gateway` contains the Vite React front-end that was previously in `frontend`.
+- **public/** inside `api-gateway` contains the Vite React front-end.
 - **core/** lays out the domain, application and infrastructure layers (currently empty).
 - **modules/** groups the feature routes for auth, products, payments and notifications.
 - **shared/** holds common middleware, utilities and patterns.
