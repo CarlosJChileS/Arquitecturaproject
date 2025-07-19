@@ -1,7 +1,4 @@
 const express = require('express');
-const app = express();
-app.use(express.json());
-
 const router = express.Router();
 
 // In-memory subscription store for demo
@@ -20,14 +17,4 @@ router.post('/', (req, res) => {
   res.status(201).json(subscription);
 });
 
-app.use('/', router);
-
-if (require.main === module) {
-  const PORT = process.env.PORT || 3006;
-  app.listen(PORT, () => {
-    console.log(`Subscriptions service running on port ${PORT}`);
-  });
-}
-
-module.exports.subscriptions = subscriptions;
-module.exports = router;
+module.exports = { router, subscriptions };
