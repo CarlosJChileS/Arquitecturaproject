@@ -1,20 +1,25 @@
-FROM node:18-slim
+# Build frontend
+FROM node:18-slim AS frontend
+WORKDIR /app/frontend
+COPY api-gateway/public/package*.json ./
+RUN npm install
+COPY api-gateway/public ./
+RUN npm run build
 
-# Create app directory
+# Backend stage
+FROM node:18-slim
 WORKDIR /usr/src/app
 
-# Install dependencies first
+# Install backend dependencies
 COPY package*.json ./
 RUN npm install --production
 
-# Copy source code
+# Copy backend source code
 COPY . .
 
-# Set environment variables
+# Copy frontend build
+COPY --from=frontend /app/frontend/dist api-gateway/public/dist
+
 ENV NODE_ENV=production
-
-# Expose the port the app runs on
 EXPOSE 3000
-
-# Start the application
 CMD ["npm", "start"]

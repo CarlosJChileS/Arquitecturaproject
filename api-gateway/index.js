@@ -1,6 +1,11 @@
 const express = require('express');
+const path = require('path');
 const app = express();
 app.use(express.json());
+
+// Serve built frontend if available
+const frontendPath = path.join(__dirname, 'public', 'dist');
+app.use(express.static(frontendPath));
 
 // Middleware
 const subscriptionAccess = require("../shared/middleware/subscriptionAccess");
@@ -20,6 +25,11 @@ app.use("/payments", paymentsRouter);
 app.use('/subscriptions', subscriptionsRouter);
 app.use('/notifications', notificationsRouter);
 app.use('/auth', authRouter);
+
+// Send React app for any other route
+app.get('*', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'index.html'));
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

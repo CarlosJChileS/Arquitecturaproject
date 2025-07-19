@@ -54,3 +54,15 @@ npm run dev
 ```
 
 This launches the Vite dev server.
+
+## Running with Docker
+
+The provided `Dockerfile` builds the React front-end and bundles it with the
+Express API so both run in a single container. To build and run:
+
+```bash
+docker build -t learnpro .
+docker run -p 3000:3000 learnpro
+```
+
+The application will be available on `http://localhost:3000`.
