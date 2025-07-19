@@ -166,7 +166,7 @@ Comunicación: Mantener al docente informado del progreso
 Problemas Técnicos: Reportar inmediatamente para buscar soluciones
 🎯 CRITERIOS DE ÉXITO
 Proyecto Exitoso debe:
-✅ Funcionar correctamente en local y cloud
+Funcionar correctamente en local y cloud
 ✅ Tener documentación clara y completa
 ✅ Cumplir con estándares de calidad (SonarQube)
 ✅ Implementar todos los patrones requeridos
