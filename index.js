@@ -3,18 +3,20 @@ const app = express();
 app.use(express.json());
 
 // Modules
-const subscriptionAccess = require("./middleware/subscriptionAccess");
+const subscriptionAccess = require("./shared/middleware/subscriptionAccess");
 const paymentsRouter = require("./modules/payments");
-const coursesRouter = require('./modules/courses');
+const productsRouter = require('./modules/products');
 const subscriptionsRouter = require('./modules/subscriptions');
 const progressRouter = require('./modules/progress');
 const notificationsRouter = require('./modules/notifications');
-app.use("/courses", subscriptionAccess, coursesRouter);
+const authRouter = require('./modules/auth');
+app.use("/products", subscriptionAccess, productsRouter);
 app.use("/progress", subscriptionAccess, progressRouter);
 
 app.use("/payments", paymentsRouter);
 app.use('/subscriptions', subscriptionsRouter);
 app.use('/notifications', notificationsRouter);
+app.use('/auth', authRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
