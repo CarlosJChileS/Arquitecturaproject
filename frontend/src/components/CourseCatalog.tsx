@@ -1,92 +1,34 @@
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Users, Star, Play } from "lucide-react";
+import { getCourses } from "../api";
 
-const courses = [
-  {
-    id: 1,
-    title: "Desarrollo Web Full Stack",
-    instructor: "Ana García",
-    description: "Aprende React, Node.js y MongoDB desde cero hasta crear aplicaciones profesionales.",
-    image: "/api/placeholder/400/250",
-    duration: "24 horas",
-    students: 1234,
-    rating: 4.8,
-    level: "Intermedio",
-    category: "Desarrollo Web",
-    price: "Premium"
-  },
-  {
-    id: 2,
-    title: "Python para Data Science",
-    instructor: "Carlos Mendoza",
-    description: "Domina Python, Pandas, NumPy y Machine Learning para análisis de datos.",
-    image: "/api/placeholder/400/250",
-    duration: "32 horas",
-    students: 856,
-    rating: 4.9,
-    level: "Avanzado",
-    category: "Data Science",
-    price: "Premium"
-  },
-  {
-    id: 3,
-    title: "Diseño UX/UI Profesional",
-    instructor: "María López",
-    description: "Crea interfaces excepcionales con Figma y principios de diseño centrado en el usuario.",
-    image: "/api/placeholder/400/250",
-    duration: "18 horas",
-    students: 2156,
-    rating: 4.7,
-    level: "Principiante",
-    category: "Diseño",
-    price: "Básico"
-  },
-  {
-    id: 4,
-    title: "Marketing Digital Avanzado",
-    instructor: "José Rodríguez",
-    description: "Estrategias completas de SEO, SEM, redes sociales y analytics para hacer crecer tu negocio.",
-    image: "/api/placeholder/400/250",
-    duration: "28 horas",
-    students: 1543,
-    rating: 4.6,
-    level: "Intermedio",
-    category: "Marketing",
-    price: "Premium"
-  },
-  {
-    id: 5,
-    title: "Inteligencia Artificial con Python",
-    instructor: "Dr. Elena Vázquez",
-    description: "Introducción práctica a IA, Machine Learning y redes neuronales.",
-    image: "/api/placeholder/400/250",
-    duration: "40 horas",
-    students: 689,
-    rating: 4.9,
-    level: "Avanzado",
-    category: "IA",
-    price: "Premium"
-  },
-  {
-    id: 6,
-    title: "Finanzas Personales",
-    instructor: "Roberto Santos",
-    description: "Aprende a manejar tus finanzas, invertir y planificar tu futuro financiero.",
-    image: "/api/placeholder/400/250",
-    duration: "12 horas",
-    students: 3421,
-    rating: 4.5,
-    level: "Principiante",
-    category: "Finanzas",
-    price: "Básico"
-  }
-];
-
-const categories = ["Todos", "Desarrollo Web", "Data Science", "Diseño", "Marketing", "IA", "Finanzas"];
+interface Course {
+  id: number;
+  title: string;
+  description: string;
+  image?: string;
+  instructor?: string;
+  duration?: string;
+  students?: number;
+  rating?: number;
+  level?: string;
+  category?: string;
+  price?: string;
+}
 
 const CourseCatalog = () => {
+  const [courses, setCourses] = useState<Course[]>([]);
+
+  useEffect(() => {
+    getCourses()
+      .then(setCourses)
+      .catch((err) => console.error(err));
+  }, []);
+
+  const categories = ["Todos", "Desarrollo Web", "Data Science", "Diseño", "Marketing", "IA", "Finanzas"];
   return (
     <section id="cursos" className="py-20 bg-background">
       <div className="container mx-auto px-4">
