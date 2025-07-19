@@ -41,6 +41,7 @@ Strategy Pattern
 5. Modelo Arquitectónico
 Opciones: Monolítico modular o Microservicios
 Justificar la elección en la documentación
+Este repositorio adopta la alternativa de **Microservicios**, por lo que el código se divide en servicios independientes.
 6. Estilos Arquitectónicos Ágiles
 Implementar CI/CD
 Despliegue automatizado
