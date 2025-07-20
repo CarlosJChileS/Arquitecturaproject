@@ -1,5 +1,7 @@
+const API_BASE = '';
+
 export async function getCourses() {
-  const res = await fetch('http://localhost:3000/products');
+  const res = await fetch(`${API_BASE}/products`);
   if (!res.ok) {
     throw new Error('Failed to fetch courses');
   }
@@ -7,7 +9,7 @@ export async function getCourses() {
 }
 
 export async function getCourse(id: number) {
-  const res = await fetch(`http://localhost:3000/products/${id}`);
+  const res = await fetch(`${API_BASE}/products/${id}`);
   if (!res.ok) {
     throw new Error('Failed to fetch course');
   }
