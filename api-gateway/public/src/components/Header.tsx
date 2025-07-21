@@ -1,7 +1,36 @@
 import { Button } from "@/components/ui/button";
-import { GraduationCap, Menu, Search, User } from "lucide-react";
+import { GraduationCap, Menu, Search, User, LogOut } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const Header = () => {
+  interface UserInfo {
+    name: string;
+    email?: string;
+  }
+
+  const [user, setUser] = useState<UserInfo | null>(null);
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+    toast({
+      title: "Sesión cerrada",
+      description: "Has cerrado sesión correctamente.",
+    });
+    navigate("/");
+  };
+
   return (
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4 py-4">
@@ -18,15 +47,18 @@ const Header = () => {
           </div>
 
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="/courses" className="text-foreground hover:text-primary transition-colors">
+            <Link to="/courses" className="text-foreground hover:text-primary transition-colors">
               Cursos
-            </a>
-            <a href="#planes" className="text-foreground hover:text-primary transition-colors">
-              Planes
-            </a>
-            <a href="#nosotros" className="text-foreground hover:text-primary transition-colors">
-              Nosotros
-            </a>
+            </Link>
+            <Link to="/dashboard" className="text-foreground hover:text-primary transition-colors">
+              Dashboard
+            </Link>
+            <Link to="/subscription" className="text-foreground hover:text-primary transition-colors">
+              Suscripción
+            </Link>
+            <Link to="/profile" className="text-foreground hover:text-primary transition-colors">
+              Perfil
+            </Link>
             <a href="#contacto" className="text-foreground hover:text-primary transition-colors">
               Contacto
             </a>
@@ -44,14 +76,37 @@ const Header = () => {
               </div>
             </div>
             
-            <Button variant="outline" size="sm" className="hidden md:flex items-center space-x-2">
-              <User className="h-4 w-4" />
-              <span>Iniciar Sesión</span>
-            </Button>
-            
-            <Button size="sm" className="bg-gradient-primary hover:opacity-90 transition-opacity">
-              Comenzar Gratis
-            </Button>
+            {user ? (
+              <div className="hidden md:flex items-center space-x-3">
+                <span className="text-sm text-muted-foreground">
+                  Hola, {user.name}
+                </span>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={handleLogout}
+                  className="flex items-center space-x-2"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span>Salir</span>
+                </Button>
+              </div>
+            ) : (
+              <>
+                <Link to="/login">
+                  <Button variant="outline" size="sm" className="hidden md:flex items-center space-x-2">
+                    <User className="h-4 w-4" />
+                    <span>Iniciar Sesión</span>
+                  </Button>
+                </Link>
+                
+                <Link to="/register">
+                  <Button size="sm" className="bg-gradient-primary hover:opacity-90 transition-opacity">
+                    Comenzar Gratis
+                  </Button>
+                </Link>
+              </>
+            )}
             
             <Button variant="ghost" size="sm" className="md:hidden">
               <Menu className="h-5 w-5" />
