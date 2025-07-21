@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -8,36 +8,95 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Clock, Users, Star, Search, Filter } from "lucide-react";
-import { getCourses } from "../api";
 
-type Course = {
-  id: number;
-  title: string;
-  description: string;
-  image?: string;
-  instructor?: string;
-  duration?: string;
-  students?: number;
-  rating?: number;
-  level?: string;
-  category?: string;
-  price?: string;
-};
+const courses = [
+  {
+    id: 1,
+    title: "JavaScript Moderno: ES6+",
+    description: "Aprende las características más recientes de JavaScript incluyendo ES6, ES7 y más allá.",
+    image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop",
+    instructor: "María González",
+    duration: "12 horas",
+    students: 2840,
+    rating: 4.8,
+    level: "Intermedio",
+    category: "Programación",
+    price: "Incluido en suscripción"
+  },
+  {
+    id: 2,
+    title: "React Avanzado",
+    description: "Domina React con hooks, context, suspense y las mejores prácticas de desarrollo.",
+    image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=400&fit=crop",
+    instructor: "Carlos Rodríguez",
+    duration: "15 horas",
+    students: 1920,
+    rating: 4.9,
+    level: "Avanzado",
+    category: "Frontend",
+    price: "Incluido en suscripción"
+  },
+  {
+    id: 3,
+    title: "Node.js y Express",
+    description: "Desarrolla APIs robustas y aplicaciones backend con Node.js y Express.",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop",
+    instructor: "Ana Martínez",
+    duration: "10 horas",
+    students: 1650,
+    rating: 4.7,
+    level: "Intermedio",
+    category: "Backend",
+    price: "Incluido en suscripción"
+  },
+  {
+    id: 4,
+    title: "Python para Data Science",
+    description: "Análisis de datos, visualización y machine learning con Python, pandas y scikit-learn.",
+    image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&h=400&fit=crop",
+    instructor: "Luis Hernández",
+    duration: "18 horas",
+    students: 3200,
+    rating: 4.9,
+    level: "Intermedio",
+    category: "Data Science",
+    price: "Incluido en suscripción"
+  },
+  {
+    id: 5,
+    title: "UI/UX Design Fundamentals",
+    description: "Principios de diseño, prototipado y experiencia de usuario para crear interfaces efectivas.",
+    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=400&fit=crop",
+    instructor: "Sara López",
+    duration: "14 horas",
+    students: 2100,
+    rating: 4.6,
+    level: "Principiante",
+    category: "Diseño",
+    price: "Incluido en suscripción"
+  },
+  {
+    id: 6,
+    title: "DevOps con Docker y Kubernetes",
+    description: "Containerización, orquestación y deployment automatizado en la nube.",
+    image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=800&h=400&fit=crop",
+    instructor: "Miguel Torres",
+    duration: "16 horas",
+    students: 1480,
+    rating: 4.8,
+    level: "Avanzado",
+    category: "DevOps",
+    price: "Incluido en suscripción"
+  }
+];
 
 const categories = ["Todas", "Programación", "Frontend", "Backend", "Data Science", "Diseño", "DevOps"];
 const levels = ["Todos", "Principiante", "Intermedio", "Avanzado"];
 
 const Courses = () => {
-  const [courses, setCourses] = useState<Course[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Todas");
   const [selectedLevel, setSelectedLevel] = useState("Todos");
-
-  useEffect(() => {
-    getCourses()
-      .then(setCourses)
-      .catch((err) => console.error(err));
-  }, []);
 
   const filteredCourses = courses.filter(course => {
     const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
