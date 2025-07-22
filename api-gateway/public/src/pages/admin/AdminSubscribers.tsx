@@ -1,4 +1,5 @@
 import { AdminLayout } from "@/components/admin/AdminLayout";
+import useAdminAuth from "@/hooks/use-admin-auth";
 import { DataTable } from "@/components/admin/DataTable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -85,6 +86,7 @@ const subscriberColumns = [
 ];
 
 export default function AdminSubscribers() {
+  useAdminAuth();
   return (
     <AdminLayout>
       <div className="p-8 space-y-8">

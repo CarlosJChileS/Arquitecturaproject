@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,6 +17,18 @@ export default function AdminLogin() {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  useEffect(() => {
+    try {
+      const data = localStorage.getItem("admin");
+      const admin = data ? JSON.parse(data) : null;
+      if (admin?.isAdminAuthenticated) {
+        navigate("/admin/dashboard", { replace: true });
+      }
+    } catch {
+      // ignore json errors
+    }
+  }, [navigate]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -25,6 +37,10 @@ export default function AdminLogin() {
     try {
       // Simple client-side credential check since Supabase has been removed
       if (email === "admin@example.com" && password === "password") {
+        localStorage.setItem(
+          "admin",
+          JSON.stringify({ email, isAdminAuthenticated: true })
+        );
         toast({
           title: "¡Bienvenido!",
           description: "Has iniciado sesión como administrador.",
