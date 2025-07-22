@@ -7,10 +7,15 @@ const {
   updateCourse,
   deleteCourse
 } = require('../../core/application/coursesService');
+const { getActiveSubscriptionByUserId } = require('../../core/application/subscriptionsService');
+const adminAccess = require('../../shared/middleware/adminAccess');
 
 router.get('/', async (req, res) => {
   try {
-    const courses = await getAllCourses();
+    const userId = parseInt(req.header('x-user-id')); 
+    const subscription = await getActiveSubscriptionByUserId(userId);
+    const plan = subscription ? subscription.plan_id || subscription.plan : undefined;
+    const courses = await getAllCourses(plan);
     res.json(courses);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -29,17 +34,17 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', adminAccess, async (req, res) => {
   try {
-    const { title, description } = req.body;
-    const course = await addCourse({ title, description });
+    const { title, description, plan } = req.body;
+    const course = await addCourse({ title, description, plan });
     res.status(201).json(course);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', adminAccess, async (req, res) => {
   try {
     const course = await updateCourse(parseInt(req.params.id, 10), req.body);
     if (!course) {
@@ -51,7 +56,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', adminAccess, async (req, res) => {
   try {
     const success = await deleteCourse(parseInt(req.params.id, 10));
     if (!success) {

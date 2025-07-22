@@ -103,3 +103,11 @@ Create a `.env` file in the project root containing the following keys:
 
 
 See `.env` for an example configuration.
+
+## Course management
+
+Administrators can create and manage courses. To perform `POST`, `PUT` or `DELETE`
+requests on `/products` endpoints the client must include the header
+`x-user-role: admin`. Each course is linked to a subscription plan through the
+`plan` field so users only see courses available for the plan from their active
+subscription.

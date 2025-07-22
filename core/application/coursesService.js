@@ -1,13 +1,15 @@
 const courses = require('../domain/courses');
 const supabase = require('../../shared/utils/supabaseClient');
 
-async function getAllCourses() {
+async function getAllCourses(plan) {
   if (process.env.SUPABASE_URL) {
-    const { data, error } = await supabase.from('courses').select('*');
+    let query = supabase.from('courses').select('*');
+    if (plan) query = query.eq('plan_id', plan);
+    const { data, error } = await query;
     if (error) throw error;
     return data;
   }
-  return courses;
+  return plan ? courses.filter(c => c.plan === plan) : courses;
 }
 
 async function getCourseById(id) {
@@ -19,25 +21,25 @@ async function getCourseById(id) {
   return courses.find(c => c.id === id);
 }
 
-async function addCourse({ title, description }) {
+async function addCourse({ title, description, plan }) {
   if (process.env.SUPABASE_URL) {
     const { data, error } = await supabase
       .from('courses')
-      .insert({ title, description })
+      .insert({ title, description, plan_id: plan })
       .single();
     if (error) throw error;
     return data;
   }
-  const course = { id: courses.length + 1, title, description };
+  const course = { id: courses.length + 1, title, description, plan };
   courses.push(course);
   return course;
 }
 
-async function updateCourse(id, { title, description }) {
+async function updateCourse(id, { title, description, plan }) {
   if (process.env.SUPABASE_URL) {
     const { data, error } = await supabase
       .from('courses')
-      .update({ title, description })
+      .update({ title, description, plan_id: plan })
       .eq('id', id)
       .single();
     if (error) throw error;
@@ -47,6 +49,7 @@ async function updateCourse(id, { title, description }) {
   if (!course) return null;
   if (title !== undefined) course.title = title;
   if (description !== undefined) course.description = description;
+  if (plan !== undefined) course.plan = plan;
   return course;
 }
 
