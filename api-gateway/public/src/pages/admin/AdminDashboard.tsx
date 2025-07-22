@@ -1,4 +1,5 @@
 import { AdminLayout } from "@/components/admin/AdminLayout";
+import useAdminAuth from "@/hooks/use-admin-auth";
 import { StatsCard } from "@/components/admin/StatsCard";
 import { DataTable } from "@/components/admin/DataTable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -42,6 +43,7 @@ const subscriberColumns = [
 ];
 
 export default function AdminDashboard() {
+  useAdminAuth();
   return (
     <AdminLayout>
       <div className="p-8 space-y-8 animate-fade-in">

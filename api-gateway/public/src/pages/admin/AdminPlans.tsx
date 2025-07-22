@@ -1,4 +1,5 @@
 import { AdminLayout } from "@/components/admin/AdminLayout";
+import useAdminAuth from "@/hooks/use-admin-auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -78,6 +79,7 @@ const planIcons = {
 };
 
 export default function AdminPlans() {
+  useAdminAuth();
   return (
     <AdminLayout>
       <div className="p-8 space-y-8">

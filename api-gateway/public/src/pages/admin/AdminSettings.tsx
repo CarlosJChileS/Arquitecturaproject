@@ -1,4 +1,5 @@
 import { AdminLayout } from "@/components/admin/AdminLayout";
+import useAdminAuth from "@/hooks/use-admin-auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +19,7 @@ import {
 } from "lucide-react";
 
 export default function AdminSettings() {
+  useAdminAuth();
   return (
     <AdminLayout>
       <div className="p-8 space-y-8">
