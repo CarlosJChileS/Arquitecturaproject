@@ -18,7 +18,8 @@ INSERT INTO users (id, email, password_hash, full_name, role)
 VALUES
     (uuid_generate_v4(), 'admin1@example.com', '$2b$10$hashedpassword1', 'Admin One', 'admin'),
     (uuid_generate_v4(), 'admin2@example.com', '$2b$10$hashedpassword2', 'Admin Two', 'admin'),
-    (uuid_generate_v4(), 'admin3@example.com', '$2b$10$hashedpassword3', 'Admin Three', 'admin');
+    (uuid_generate_v4(), 'admin3@example.com', '$2b$10$hashedpassword3', 'Admin Three', 'admin')
+ON CONFLICT (email) DO NOTHING;
 
 -- Categories for courses
 CREATE TABLE IF NOT EXISTS categories (
@@ -94,3 +95,8 @@ CREATE TABLE IF NOT EXISTS notifications (
     is_read BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Helpful indexes
+CREATE INDEX IF NOT EXISTS idx_subscriptions_user ON subscriptions(user_id);
+CREATE INDEX IF NOT EXISTS idx_progress_user ON progress(user_id);
+CREATE INDEX IF NOT EXISTS idx_notifications_user ON notifications(user_id);
