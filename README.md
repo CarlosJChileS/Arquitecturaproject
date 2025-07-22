@@ -103,3 +103,22 @@ Create a `.env` file in the project root containing the following keys:
 
 
 See `.env` for an example configuration.
+
+### Admin subscription management
+
+Admins can now manage user subscriptions through the `/subscriptions` API.  The
+following endpoints require an `x-user-role: admin` header:
+
+```
+PUT /subscriptions/:id     # update plan, status or dates
+DELETE /subscriptions/:id  # remove a subscription
+```
+
+All users (including admins) can retrieve subscriptions with:
+
+```
+GET /subscriptions/:id
+```
+
+These changes ensure admins share the same subscriptions as regular users and
+any modifications are immediately visible through the API.
