@@ -15,7 +15,7 @@ const Subscription = () => {
     plan: 'premium',
     status: 'active',
     price: 79,
-    currency: 'EUR',
+    currency: 'USD',
     nextBilling: '2024-08-20',
     startDate: '2023-08-20',
     autoRenew: true
@@ -105,7 +105,7 @@ const Subscription = () => {
                       <p className="text-muted-foreground">Renovación automática activa</p>
                     </div>
                     <div className="text-right">
-                      <div className="text-2xl font-bold">€{subscription.price}{selectedPlan.period}</div>
+                      <div className="text-2xl font-bold">${subscription.price}{selectedPlan.period}</div>
                       <div className="text-sm text-muted-foreground">
                         Próxima facturación: {new Date(subscription.nextBilling).toLocaleDateString('es-ES')}
                       </div>
@@ -202,7 +202,7 @@ const Subscription = () => {
                         </div>
                         <div className="flex items-center gap-3">
                           <div className="text-right">
-                            <div className="font-medium">€{bill.amount}</div>
+                            <div className="font-medium">${bill.amount}</div>
                             <Badge variant={bill.status === 'paid' ? 'default' : 'destructive'} className="text-xs">
                               {bill.status === 'paid' ? 'Pagado' : 'Pendiente'}
                             </Badge>
@@ -243,10 +243,10 @@ const Subscription = () => {
                           </Badge>
                         )}
                       </div>
-                      <div className="text-lg font-bold">€{plan.price}{plan.period}</div>
+                      <div className="text-lg font-bold">${plan.price}{plan.period}</div>
                       {plan.originalPrice && (
                         <div className="text-sm text-muted-foreground line-through">
-                          €{plan.originalPrice}/año
+                          ${plan.originalPrice}/año
                         </div>
                       )}
                     </div>

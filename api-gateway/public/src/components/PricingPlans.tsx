@@ -117,7 +117,7 @@ const PricingPlans = () => {
                   <div className="mt-6">
                     <div className="flex items-baseline justify-center">
                       <span className="text-4xl font-bold text-foreground">
-                        €{plan.price}
+                        ${plan.price}
                       </span>
                       <span className="text-muted-foreground ml-1">{plan.period}</span>
                     </div>
@@ -128,7 +128,7 @@ const PricingPlans = () => {
                     )}
                     {'originalPrice' in plan && plan.originalPrice && (
                       <div className="text-sm text-muted-foreground mt-2 line-through">
-                        €{plan.originalPrice}/año
+                        ${plan.originalPrice}/año
                       </div>
                     )}
                   </div>

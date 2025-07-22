@@ -235,10 +235,10 @@ const Checkout = () => {
                       )}
                     </div>
                     <div className="text-right">
-                      <div className="font-bold text-lg">€{selectedPlan.price}{selectedPlan.period}</div>
+                      <div className="font-bold text-lg">${selectedPlan.price}{selectedPlan.period}</div>
                       {'originalPrice' in selectedPlan && selectedPlan.originalPrice && (
                         <div className="text-sm text-muted-foreground line-through">
-                          €{selectedPlan.originalPrice}/año
+                          ${selectedPlan.originalPrice}/año
                         </div>
                       )}
                     </div>
@@ -260,7 +260,7 @@ const Checkout = () => {
 
                   <div className="flex items-center justify-between font-bold text-lg">
                     <span>Total</span>
-                    <span>€{selectedPlan.price}{selectedPlan.period}</span>
+                    <span>${selectedPlan.price}{selectedPlan.period}</span>
                   </div>
 
                   <Button 
