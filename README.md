@@ -23,6 +23,7 @@ shared/
     utils/
     patterns/
 docker/
+database/
 ```
 
 - **api-gateway/** hosts the Express application and serves the different feature modules.
@@ -31,6 +32,8 @@ docker/
 - **modules/** groups the feature routes for auth, products, payments and notifications.
 - **shared/** holds common middleware, utilities and patterns.
 - **docker/** can be used for containerisation files.
+- **database/** includes the `supabase-schema.sql` file with the normalized
+  PostgreSQL tables used by the project.
 
 ## Running the backend
 
