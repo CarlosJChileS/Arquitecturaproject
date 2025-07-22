@@ -114,12 +114,14 @@ export default {
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
 				'gradient-hero': 'var(--gradient-hero)',
-				'gradient-card': 'var(--gradient-card)'
+                                'gradient-card': 'var(--gradient-card)',
+                                'gradient-learning': 'var(--gradient-learning)'
 			},
 			boxShadow: {
-				'soft': 'var(--shadow-soft)',
-				'glow': 'var(--shadow-glow)',
-				'card': 'var(--shadow-card)'
+                                'soft': 'var(--shadow-soft)',
+                                'glow': 'var(--shadow-glow)',
+                                'card': 'var(--shadow-card)',
+                                'form': 'var(--shadow-form)'
 			}
 		}
 	},
