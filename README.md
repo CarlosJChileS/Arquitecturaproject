@@ -27,7 +27,7 @@ docker/
 
 - **api-gateway/** hosts the Express application and serves the different feature modules.
 - **public/** inside `api-gateway` contains the Vite React front-end.
-- **core/** lays out the domain, application and infrastructure layers (currently empty).
+- **core/** now holds the domain models and application services used by the feature modules.
 - **modules/** groups the feature routes for auth, products, payments and notifications.
 - **shared/** holds common middleware, utilities and patterns.
 - **docker/** can be used for containerisation files.
@@ -61,7 +61,7 @@ The provided `Dockerfile` builds the React front-end and bundles it with the
 Express API so both run in a single container. To build and run:
 
 ```bash
-docker build -t learnpro .
+docker build -t learnpro -f docker/Dockerfile .
 docker run -p 3000:3000 learnpro
 ```
 

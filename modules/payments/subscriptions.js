@@ -1,19 +1,17 @@
 const express = require('express');
 const router = express.Router();
+const {
+  getAllSubscriptions,
+  addSubscription
+} = require('../../core/application/subscriptionsService');
+const subscriptions = require('../../core/domain/subscriptions');
 
-// In-memory subscription store for demo
-const subscriptions = [];
-
-// List subscriptions
 router.get('/', (req, res) => {
-  res.json(subscriptions);
+  res.json(getAllSubscriptions());
 });
 
-// Create subscription (monthly/annual)
 router.post('/', (req, res) => {
-  const { userId, plan } = req.body;
-  const subscription = { id: subscriptions.length + 1, userId, plan, active: true };
-  subscriptions.push(subscription);
+  const subscription = addSubscription(req.body);
   res.status(201).json(subscription);
 });
 
