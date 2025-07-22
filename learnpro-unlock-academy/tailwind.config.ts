@@ -111,10 +111,11 @@ export default {
 				'scale-in': 'scaleIn 0.3s ease-out'
 			},
 			backgroundImage: {
-				'gradient-primary': 'var(--gradient-primary)',
-				'gradient-hero': 'var(--gradient-hero)',
-				'gradient-card': 'var(--gradient-card)'
-			},
+                                'gradient-primary': 'var(--gradient-primary)',
+                                'gradient-hero': 'var(--gradient-hero)',
+                                'gradient-card': 'var(--gradient-card)',
+                                'gradient-learning': 'var(--gradient-learning)'
+                        },
 			boxShadow: {
 				'soft': 'var(--shadow-soft)',
 				'glow': 'var(--shadow-glow)',
