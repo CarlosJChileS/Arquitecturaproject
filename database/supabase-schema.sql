@@ -27,6 +27,16 @@ CREATE TABLE IF NOT EXISTS categories (
     name TEXT UNIQUE NOT NULL
 );
 
+
+-- Subscription plans
+CREATE TABLE IF NOT EXISTS plans (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    price NUMERIC(10,2) NOT NULL,
+    period INTERVAL NOT NULL,
+    description TEXT
+);
+
 -- Courses
 CREATE TABLE IF NOT EXISTS courses (
     id SERIAL PRIMARY KEY,
@@ -46,15 +56,6 @@ CREATE TABLE IF NOT EXISTS lessons (
     title TEXT NOT NULL,
     content_url TEXT,
     lesson_order INTEGER
-);
-
--- Subscription plans
-CREATE TABLE IF NOT EXISTS plans (
-    id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    price NUMERIC(10,2) NOT NULL,
-    period INTERVAL NOT NULL,
-    description TEXT
 );
 
 -- Subscriptions purchased by users
