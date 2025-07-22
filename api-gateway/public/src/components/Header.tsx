@@ -50,15 +50,19 @@ const Header = () => {
             <Link to="/courses" className="text-foreground hover:text-primary transition-colors">
               Cursos
             </Link>
-            <Link to="/dashboard" className="text-foreground hover:text-primary transition-colors">
-              Dashboard
-            </Link>
-            <Link to="/subscription" className="text-foreground hover:text-primary transition-colors">
-              Suscripción
-            </Link>
-            <Link to="/profile" className="text-foreground hover:text-primary transition-colors">
-              Perfil
-            </Link>
+            {user && (
+              <>
+                <Link to="/dashboard" className="text-foreground hover:text-primary transition-colors">
+                  Dashboard
+                </Link>
+                <Link to="/subscription" className="text-foreground hover:text-primary transition-colors">
+                  Suscripción
+                </Link>
+                <Link to="/profile" className="text-foreground hover:text-primary transition-colors">
+                  Perfil
+                </Link>
+              </>
+            )}
             <Link to="/contact" className="text-foreground hover:text-primary transition-colors">
               Contacto
             </Link>
