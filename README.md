@@ -69,3 +69,21 @@ docker run -p 3000:3000 learnpro
 ```
 
 The application will be available on `http://localhost:3000`.
+
+## Using Supabase locally
+
+The project can connect to a Supabase backend. A convenience client is provided in `shared/utils/supabaseClient.js` which reads `SUPABASE_URL` and `SUPABASE_ANON_KEY` from the environment. You can run a full Supabase stack locally using the [Supabase CLI](https://supabase.com/docs/guides/cli). After installing the CLI, start the services:
+
+```bash
+supabase start
+```
+
+This command launches a local Postgres instance and prints connection credentials. Set the `SUPABASE_URL` and `SUPABASE_ANON_KEY` variables before starting the API gateway so it connects to your local stack:
+
+```bash
+export SUPABASE_URL=http://localhost:54321
+export SUPABASE_ANON_KEY=your-local-anon-key
+npm start
+```
+
+To use a hosted Supabase project instead, set the same environment variables to your project's URL and API key. The server will then connect to the remote backend.

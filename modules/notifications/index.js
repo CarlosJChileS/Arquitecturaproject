@@ -5,14 +5,22 @@ const {
   addNotification
 } = require('../../core/application/notificationsService');
 
-router.get('/:userId', (req, res) => {
-  const notes = getNotificationsByUser(parseInt(req.params.userId));
-  res.json(notes);
+router.get('/:userId', async (req, res) => {
+  try {
+    const notes = await getNotificationsByUser(parseInt(req.params.userId));
+    res.json(notes);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-router.post('/', (req, res) => {
-  const note = addNotification(req.body);
-  res.status(201).json(note);
+router.post('/', async (req, res) => {
+  try {
+    const note = await addNotification(req.body);
+    res.status(201).json(note);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 module.exports = router;

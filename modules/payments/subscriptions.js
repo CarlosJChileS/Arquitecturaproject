@@ -6,13 +6,22 @@ const {
 } = require('../../core/application/subscriptionsService');
 const subscriptions = require('../../core/domain/subscriptions');
 
-router.get('/', (req, res) => {
-  res.json(getAllSubscriptions());
+router.get('/', async (req, res) => {
+  try {
+    const all = await getAllSubscriptions();
+    res.json(all);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-router.post('/', (req, res) => {
-  const subscription = addSubscription(req.body);
-  res.status(201).json(subscription);
+router.post('/', async (req, res) => {
+  try {
+    const subscription = await addSubscription(req.body);
+    res.status(201).json(subscription);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 module.exports = { router, subscriptions };
