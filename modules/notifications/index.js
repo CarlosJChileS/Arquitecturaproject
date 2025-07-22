@@ -1,18 +1,17 @@
 const express = require('express');
 const router = express.Router();
-
-// In-memory notifications store for demo
-const notifications = [];
+const {
+  getNotificationsByUser,
+  addNotification
+} = require('../../core/application/notificationsService');
 
 router.get('/:userId', (req, res) => {
-  const userNotifications = notifications.filter(n => n.userId === parseInt(req.params.userId));
-  res.json(userNotifications);
+  const notes = getNotificationsByUser(parseInt(req.params.userId));
+  res.json(notes);
 });
 
 router.post('/', (req, res) => {
-  const { userId, message } = req.body;
-  const note = { id: notifications.length + 1, userId, message };
-  notifications.push(note);
+  const note = addNotification(req.body);
   res.status(201).json(note);
 });
 
