@@ -33,4 +33,39 @@ async function addCourse({ title, description }) {
   return course;
 }
 
-module.exports = { getAllCourses, getCourseById, addCourse };
+async function updateCourse(id, { title, description }) {
+  if (process.env.SUPABASE_URL) {
+    const { data, error } = await supabase
+      .from('courses')
+      .update({ title, description })
+      .eq('id', id)
+      .single();
+    if (error) throw error;
+    return data;
+  }
+  const course = courses.find(c => c.id === id);
+  if (!course) return null;
+  if (title !== undefined) course.title = title;
+  if (description !== undefined) course.description = description;
+  return course;
+}
+
+async function deleteCourse(id) {
+  if (process.env.SUPABASE_URL) {
+    const { error } = await supabase.from('courses').delete().eq('id', id);
+    if (error) throw error;
+    return true;
+  }
+  const index = courses.findIndex(c => c.id === id);
+  if (index === -1) return false;
+  courses.splice(index, 1);
+  return true;
+}
+
+module.exports = {
+  getAllCourses,
+  getCourseById,
+  addCourse,
+  updateCourse,
+  deleteCourse
+};

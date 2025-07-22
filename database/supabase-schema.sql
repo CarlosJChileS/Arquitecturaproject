@@ -9,8 +9,16 @@ CREATE TABLE IF NOT EXISTS users (
     email TEXT UNIQUE NOT NULL,
     password_hash TEXT NOT NULL,
     full_name TEXT,
+    role TEXT NOT NULL DEFAULT 'user',
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Predefined admin accounts
+INSERT INTO users (id, email, password_hash, full_name, role)
+VALUES
+    (uuid_generate_v4(), 'admin1@example.com', '$2b$10$hashedpassword1', 'Admin One', 'admin'),
+    (uuid_generate_v4(), 'admin2@example.com', '$2b$10$hashedpassword2', 'Admin Two', 'admin'),
+    (uuid_generate_v4(), 'admin3@example.com', '$2b$10$hashedpassword3', 'Admin Three', 'admin');
 
 -- Categories for courses
 CREATE TABLE IF NOT EXISTS categories (
