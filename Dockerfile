@@ -19,7 +19,6 @@ COPY modules ./modules
 COPY api-gateway ./api-gateway
 COPY shared ./shared
 COPY database ./database
-COPY .env .env
 
 # Include built frontend assets
 COPY --from=frontend /app/frontend/dist ./api-gateway/public/dist

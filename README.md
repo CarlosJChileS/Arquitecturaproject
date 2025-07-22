@@ -66,7 +66,7 @@ production files. Ensure you build from the repository root so the Docker
 context includes the frontend sources. To build and run:
 
 ```bash
-docker build -t learnpro -f docker/Dockerfile .
+docker build -t learnpro .
 docker run -p 8080:8080 learnpro
 ```
 
@@ -92,7 +92,7 @@ To use a hosted Supabase project instead, set the same environment variables to 
 
 ## Environment variables
 
-Create a `.env` file in the project root containing the following keys:
+Create a `.env` file in the project root containing the following keys when running locally:
 
 - `SUPABASE_URL` and `SUPABASE_ANON_KEY` – Supabase connection details.
 - `SUPABASE_SERVICE_ROLE_KEY` – service role key for privileged operations.
@@ -102,7 +102,7 @@ Create a `.env` file in the project root containing the following keys:
 - `ADMIN_ACCOUNTS` – optional `email:password` pairs for initial admin accounts.
 
 
-See `.env` for an example configuration.
+See `.env` for an example configuration. When running the Docker container in production you can provide these variables using your orchestrator (for example Cloud Run or `docker run -e`).
 
 ## Course management
 
