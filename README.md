@@ -61,7 +61,7 @@ The provided `Dockerfile` builds the React front-end and bundles it with the
 Express API so both run in a single container. To build and run:
 
 ```bash
-docker build -t learnpro .
+docker build -t learnpro -f docker/Dockerfile .
 docker run -p 3000:3000 learnpro
 ```
 
