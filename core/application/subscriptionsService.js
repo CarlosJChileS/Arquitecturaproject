@@ -51,7 +51,6 @@ async function getActiveSubscriptionByUserId(userId) {
   return subscriptions.find(s => s.userId === userId && s.active) || null;
 }
 
-module.exports = { getAllSubscriptions, addSubscription, getActiveSubscriptionByUserId };
 async function updateSubscription(id, updates) {
   if (process.env.SUPABASE_URL) {
     const { data, error } = await supabase
@@ -89,6 +88,7 @@ module.exports = {
   getAllSubscriptions,
   getSubscription,
   addSubscription,
+  getActiveSubscriptionByUserId,
   updateSubscription,
   deleteSubscription,
 };
