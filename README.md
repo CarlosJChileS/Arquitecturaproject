@@ -100,3 +100,16 @@ Create a `.env` file in the project root containing the following keys:
 - `ADMIN_ACCOUNTS` – optional `email:password` pairs for initial admin accounts.
 
 See `.env` for an example configuration.
+
+## Design Patterns
+
+The project illustrates several classic design patterns:
+
+- **Singleton** – the Supabase client is created once in
+  `shared/utils/supabaseClient.js` and reused across the app.
+- **Factory Method** – `PaymentFactory` instantiates the required payment
+  processor (Stripe or PayPal) depending on the caller.
+- **Strategy** – payment processors implement a common interface and are used
+  through `PaymentContext` to allow different checkout strategies.
+- **Repository** – all course persistence logic lives inside
+  `CourseRepository`, providing a single access point for the service layer.
