@@ -1,7 +1,10 @@
 # LearnPro
 
-Simple subscription-based learning platform using a modular architecture. The project is a small
-Node.js proof of concept that exposes various feature modules and a React front-end.
+Simple subscription-based learning platform built as a **modular monolith**. All
+back‑end features live in a single Node.js application but are grouped by module
+(auth, products, payments, notifications). This keeps deployment simple while
+still enforcing separation of concerns, so a microservices approach is not
+required for the current scale.
 
 ## Structure
 
@@ -46,6 +49,14 @@ npm start
 
 The server runs on port `3000` by default.
 
+### Running tests
+
+```bash
+npm test
+```
+
+This executes the Jest test suite.
+
 ## Running the front-end
 
 The React client lives inside `api-gateway/public`. To run it in development mode:
@@ -69,6 +80,17 @@ docker run -p 3000:3000 learnpro
 ```
 
 The application will be available on `http://localhost:3000`.
+
+### Running with Docker Compose
+
+For local development the repository also includes a `docker-compose.yml` file
+which spins up the application using the same Dockerfile:
+
+```bash
+docker compose up --build
+```
+
+This exposes the API on port `3000`.
 
 ## Using Supabase locally
 
@@ -113,3 +135,17 @@ The project illustrates several classic design patterns:
   through `PaymentContext` to allow different checkout strategies.
 - **Repository** – all course persistence logic lives inside
   `CourseRepository`, providing a single access point for the service layer.
+
+## Continuous Integration and Deployment
+
+GitHub Actions (`.github/workflows/ci.yml`) runs the Jest tests and builds the
+Docker image on every push or pull request. When commits reach the `main`
+branch the workflow optionally triggers a deployment to Render using a deploy
+hook stored in the `RENDER_DEPLOY_HOOK` secret.
+
+## Cloud Deployment
+
+The project can be hosted on [Render](https://render.com/) or any other cloud
+provider capable of running a Docker container. Configure the deploy hook in the
+repository secrets and every successful build of the `main` branch will publish
+a new version.
