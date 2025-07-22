@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 const menuItems = [
-  { title: "Dashboard", url: "/admin", icon: BarChart3 },
+  { title: "Dashboard", url: "/admin/dashboard", icon: BarChart3 },
   { title: "Cursos", url: "/admin/courses", icon: BookOpen },
   { title: "Suscriptores", url: "/admin/subscribers", icon: Users },
   { title: "Planes", url: "/admin/plans", icon: CreditCard },
@@ -55,7 +55,7 @@ export function AdminSidebar() {
           <NavLink
             key={item.title}
             to={item.url}
-            end={item.url === "/admin"}
+            end={item.url === "/admin/dashboard"}
             className={({ isActive }) =>
               cn(
                 "flex items-center gap-3 px-3 py-2 rounded-lg transition-colors",
