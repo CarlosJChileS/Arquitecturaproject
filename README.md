@@ -139,16 +139,15 @@ The project illustrates several classic design patterns:
 ## Continuous Integration and Deployment
 
 GitHub Actions (`.github/workflows/ci.yml`) runs the Jest tests and builds the
-Docker image on every push or pull request. When commits reach the `main`
-branch the workflow optionally triggers a deployment to Render using a deploy
-hook stored in the `RENDER_DEPLOY_HOOK` secret.
+Docker image on every push or pull request. The workflow only verifies that the
+application and Docker image build correctly and does not perform any automatic
+deployment.
 
 ## Cloud Deployment
 
-The project can be hosted on [Render](https://render.com/) or any other cloud
-provider capable of running a Docker container. Configure the deploy hook in the
-repository secrets and every successful build of the `main` branch will publish
- a new version.
+Applications can be deployed to any provider capable of running a Docker
+container. For Google Cloud Run, a simple Cloud Build configuration is provided
+under `deployments/google-cloud`.
 
 ### Deploying to Google Cloud Run
 
