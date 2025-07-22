@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('../shared/utils/validateEnv')();
 const express = require('express');
 const path = require('path');
 const app = express();
