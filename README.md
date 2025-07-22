@@ -87,3 +87,16 @@ npm start
 ```
 
 To use a hosted Supabase project instead, set the same environment variables to your project's URL and API key. The server will then connect to the remote backend.
+
+## Environment variables
+
+Create a `.env` file in the project root containing the following keys:
+
+- `SUPABASE_URL` and `SUPABASE_ANON_KEY` – Supabase connection details.
+- `SUPABASE_SERVICE_ROLE_KEY` – service role key for privileged operations.
+- `ADMIN_EMAILS` – comma-separated list of administrator emails.
+- `PORT` – port for the API gateway (defaults to `3000`).
+- `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` – database connection information.
+- `ADMIN_ACCOUNTS` – optional `email:password` pairs for initial admin accounts.
+
+See `.env` for an example configuration.
