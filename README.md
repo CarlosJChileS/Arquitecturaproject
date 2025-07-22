@@ -152,16 +152,16 @@ repository secrets and every successful build of the `main` branch will publish
 
 ### Deploying to Google Cloud Run
 
-The directory `deployments/google-cloud` contains a `cloudbuild.yaml` file that
-builds the Docker image defined in `docker/Dockerfile`, pushes it to Google
-Container Registry and deploys it to **Cloud Run**. Both the Express API and the
-React front-end run from the same container.
-
-To deploy using the Google Cloud CLI:
+After building the Docker image you can deploy it directly to **Cloud Run**.
+Use the Google Cloud CLI to build and push the image, then create the service:
 
 ```bash
-gcloud builds submit --config deployments/google-cloud/cloudbuild.yaml .
+gcloud builds submit --tag gcr.io/$PROJECT_ID/learnpro .
+gcloud run deploy learnpro-service \
+  --image gcr.io/$PROJECT_ID/learnpro \
+  --region us-central1 --platform managed \
+  --allow-unauthenticated
 ```
 
-Once the build completes, Cloud Run prints the service URL where the application
-is available.
+Once the deployment completes, Cloud Run prints the service URL where the
+application is available.
