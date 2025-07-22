@@ -17,18 +17,18 @@ interface Column {
   type?: "text" | "badge" | "date" | "actions";
 }
 
-interface DataTableProps {
+interface DataTableProps<T extends Record<string, unknown>> {
   title: string;
-  data: any[];
+  data: T[];
   columns: Column[];
-  onEdit?: (item: any) => void;
-  onDelete?: (item: any) => void;
-  onView?: (item: any) => void;
+  onEdit?: (item: T) => void;
+  onDelete?: (item: T) => void;
+  onView?: (item: T) => void;
 }
 
-export function DataTable({ title, data, columns, onEdit, onDelete, onView }: DataTableProps) {
-  const renderCell = (item: any, column: Column) => {
-    const value = item[column.key];
+export function DataTable<T extends Record<string, unknown>>({ title, data, columns, onEdit, onDelete, onView }: DataTableProps<T>) {
+  const renderCell = (item: T, column: Column) => {
+    const value = (item as Record<string, unknown>)[column.key];
     
     switch (column.type) {
       case "badge":

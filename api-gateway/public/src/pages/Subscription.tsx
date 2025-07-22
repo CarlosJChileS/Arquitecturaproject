@@ -9,12 +9,12 @@ import { CreditCard, Calendar, Download, Settings, AlertCircle, CheckCircle, Cro
 import { Link } from 'react-router-dom';
 
 const Subscription = () => {
-  const [currentPlan, setCurrentPlan] = useState('annual');
+  const [currentPlan, setCurrentPlan] = useState('premium');
   
   const subscription = {
-    plan: 'annual',
+    plan: 'premium',
     status: 'active',
-    price: 290,
+    price: 79,
     currency: 'EUR',
     nextBilling: '2024-08-20',
     startDate: '2023-08-20',
@@ -36,22 +36,29 @@ const Subscription = () => {
 
   const availablePlans = [
     {
-      id: 'monthly',
-      name: 'Plan Mensual',
+      id: 'basic',
+      name: 'Plan Básico',
       price: 29,
       period: '/mes',
-      features: ['Acceso a todos los cursos', 'Certificados de finalización', 'Soporte prioritario']
+      features: ['Acceso a 5 cursos', 'Soporte por email']
     },
     {
-      id: 'annual',
-      name: 'Plan Anual',
-      price: 290,
-      originalPrice: 348,
-      period: '/año',
-      savings: '17% de descuento',
-      features: ['Acceso a todos los cursos', 'Certificados de finalización', 'Soporte prioritario', 'Contenido exclusivo']
+      id: 'premium',
+      name: 'Plan Premium',
+      price: 79,
+      period: '/mes',
+      features: ['Acceso a todos los cursos', 'Soporte prioritario', 'Certificados', 'Mentoría 1:1 (2h/mes)']
+    },
+    {
+      id: 'enterprise',
+      name: 'Plan Enterprise',
+      price: 199,
+      period: '/mes',
+      features: ['Acceso ilimitado', 'Soporte 24/7', 'Certificados', 'Mentoría 1:1 (4h/mes)', 'Acceso offline']
     }
   ];
+
+  const selectedPlan = availablePlans.find((p) => p.id === subscription.plan) || availablePlans[0];
 
   const handleCancelSubscription = () => {
     console.log('Canceling subscription...');
@@ -94,11 +101,11 @@ const Subscription = () => {
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="text-xl font-semibold">Plan Anual</h3>
+                      <h3 className="text-xl font-semibold">{selectedPlan.name}</h3>
                       <p className="text-muted-foreground">Renovación automática activa</p>
                     </div>
                     <div className="text-right">
-                      <div className="text-2xl font-bold">€{subscription.price}/año</div>
+                      <div className="text-2xl font-bold">€{subscription.price}{selectedPlan.period}</div>
                       <div className="text-sm text-muted-foreground">
                         Próxima facturación: {new Date(subscription.nextBilling).toLocaleDateString('es-ES')}
                       </div>

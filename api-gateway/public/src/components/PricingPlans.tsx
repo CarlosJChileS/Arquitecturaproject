@@ -6,34 +6,44 @@ import { Link } from "react-router-dom";
 
 const plans = [
   {
-    id: "monthly",
-    name: "Plan Mensual",
-    description: "Perfecto para comenzar tu viaje de aprendizaje",
+    id: "basic",
+    name: "Plan Básico",
+    description: "Perfecto para comenzar tu aprendizaje",
     price: 29,
     period: "/mes",
-    icon: Star,
+    icon: Crown,
     popular: false,
-    features: [
-      "Acceso a todos los cursos",
-      "Certificados de finalización",
-      "Soporte prioritario"
-    ]
+    features: ["Acceso a 5 cursos", "Soporte por email"]
   },
   {
-    id: "annual",
-    name: "Plan Anual",
-    description: "La opción más popular para profesionales",
-    price: 290,
-    originalPrice: 348,
-    period: "/año",
-    savings: "17% de descuento",
-    icon: Zap,
+    id: "premium",
+    name: "Plan Premium",
+    description: "Para estudiantes serios que buscan más",
+    price: 79,
+    period: "/mes",
+    icon: Star,
     popular: true,
     features: [
       "Acceso a todos los cursos",
-      "Certificados de finalización", 
       "Soporte prioritario",
-      "Contenido exclusivo"
+      "Certificados",
+      "Mentoría 1:1 (2h/mes)"
+    ]
+  },
+  {
+    id: "enterprise",
+    name: "Plan Enterprise",
+    description: "Para equipos y organizaciones",
+    price: 199,
+    period: "/mes",
+    icon: Zap,
+    popular: false,
+    features: [
+      "Acceso ilimitado",
+      "Soporte 24/7",
+      "Certificados",
+      "Mentoría 1:1 (4h/mes)",
+      "Acceso offline"
     ]
   }
 ];
