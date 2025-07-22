@@ -7,7 +7,6 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { GraduationCap, Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -24,19 +23,15 @@ export default function AdminLogin() {
     setError("");
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        setError(error.message);
-      } else {
+      // Simple client-side credential check since Supabase has been removed
+      if (email === "admin@example.com" && password === "password") {
         toast({
           title: "¡Bienvenido!",
           description: "Has iniciado sesión como administrador.",
         });
         navigate("/admin/dashboard");
+      } else {
+        setError("Credenciales inválidas");
       }
     } catch (err) {
       setError("Error al iniciar sesión. Inténtalo de nuevo.");
