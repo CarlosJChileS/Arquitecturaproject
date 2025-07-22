@@ -12,7 +12,7 @@ import { useSearchParams, Link } from 'react-router-dom';
 
 const Checkout = () => {
   const [searchParams] = useSearchParams();
-  const planType = searchParams.get('plan') || 'monthly';
+  const planType = searchParams.get('plan') || 'basic';
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [formData, setFormData] = useState({
     email: '',
@@ -26,19 +26,23 @@ const Checkout = () => {
   });
 
   const plans = {
-    monthly: {
-      name: 'Plan Mensual',
+    basic: {
+      name: 'Plan Básico',
       price: 29,
       period: '/mes',
-      features: ['Acceso a todos los cursos', 'Certificados de finalización', 'Soporte prioritario']
+      features: ['Acceso a 5 cursos', 'Soporte por email']
     },
-    annual: {
-      name: 'Plan Anual',
-      price: 290,
-      originalPrice: 348,
-      period: '/año',
-      savings: '17% de descuento',
-      features: ['Acceso a todos los cursos', 'Certificados de finalización', 'Soporte prioritario', 'Contenido exclusivo']
+    premium: {
+      name: 'Plan Premium',
+      price: 79,
+      period: '/mes',
+      features: ['Acceso a todos los cursos', 'Soporte prioritario', 'Certificados', 'Mentoría 1:1 (2h/mes)']
+    },
+    enterprise: {
+      name: 'Plan Enterprise',
+      price: 199,
+      period: '/mes',
+      features: ['Acceso ilimitado', 'Soporte 24/7', 'Certificados', 'Mentoría 1:1 (4h/mes)', 'Acceso offline']
     }
   } as const;
 
