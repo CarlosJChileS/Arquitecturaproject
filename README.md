@@ -61,9 +61,9 @@ This launches the Vite dev server.
 ## Running with Docker
 
 The provided `Dockerfile` builds the React front-end and bundles it with the
-Express API so both run in a single container. Ensure you build from the
-repository root so the Docker context includes the frontend sources. To build
-and run:
+Express API using a multi-stage build so the final image only contains the
+production files. Ensure you build from the repository root so the Docker
+context includes the frontend sources. To build and run:
 
 ```bash
 docker build -t learnpro -f docker/Dockerfile .
