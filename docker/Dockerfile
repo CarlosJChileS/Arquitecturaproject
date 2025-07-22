@@ -2,7 +2,7 @@
 FROM node:18-slim AS frontend
 WORKDIR /app/frontend
 COPY api-gateway/public/package*.json ./
-RUN npm install
+RUN npm ci
 COPY api-gateway/public ./
 RUN npm run build
 
@@ -12,7 +12,7 @@ WORKDIR /usr/src/app
 
 # Install backend dependencies
 COPY package*.json ./
-RUN npm install --production
+RUN npm ci --omit=dev
 
 # Copy backend source code
 COPY . .
