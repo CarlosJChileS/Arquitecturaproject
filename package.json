@@ -12,8 +12,11 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@paypal/checkout-server-sdk": "^1.0.3",
+    "@stripe/stripe-js": "^7.5.0",
     "@supabase/supabase-js": "^2.52.0",
     "dotenv": "^16.3.1",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "stripe": "^18.3.0"
   }
 }
