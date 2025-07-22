@@ -100,7 +100,6 @@ Create a `.env` file in the project root containing the following keys:
 - `PORT` – port for the API gateway (defaults to `8080`).
 - `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` – database connection information.
 - `ADMIN_ACCOUNTS` – optional `email:password` pairs for initial admin accounts.
-- `STRIPE_PUBLIC_KEY` and `STRIPE_SECRET_KEY` – credentials for Stripe payments.
-- `PAYPAL_CLIENT_ID` and `PAYPAL_CLIENT_SECRET` – credentials for PayPal integration.
+
 
 See `.env` for an example configuration.
