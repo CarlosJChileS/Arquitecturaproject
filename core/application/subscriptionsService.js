@@ -10,6 +10,19 @@ async function getAllSubscriptions() {
   return subscriptions;
 }
 
+async function getSubscription(id) {
+  if (process.env.SUPABASE_URL) {
+    const { data, error } = await supabase
+      .from('subscriptions')
+      .select('*')
+      .eq('id', id)
+      .single();
+    if (error) throw error;
+    return data;
+  }
+  return subscriptions.find((s) => s.id === parseInt(id));
+}
+
 async function addSubscription({ userId, plan, active = true }) {
   if (process.env.SUPABASE_URL) {
     const { data, error } = await supabase
@@ -39,3 +52,43 @@ async function getActiveSubscriptionByUserId(userId) {
 }
 
 module.exports = { getAllSubscriptions, addSubscription, getActiveSubscriptionByUserId };
+async function updateSubscription(id, updates) {
+  if (process.env.SUPABASE_URL) {
+    const { data, error } = await supabase
+      .from('subscriptions')
+      .update({
+        plan_id: updates.plan,
+        status: updates.active ? 'active' : 'inactive',
+        start_date: updates.startDate,
+        end_date: updates.endDate,
+      })
+      .eq('id', id)
+      .single();
+    if (error) throw error;
+    return data;
+  }
+  const sub = subscriptions.find((s) => s.id === parseInt(id));
+  if (!sub) throw new Error('Subscription not found');
+  Object.assign(sub, updates);
+  return sub;
+}
+
+async function deleteSubscription(id) {
+  if (process.env.SUPABASE_URL) {
+    const { error } = await supabase.from('subscriptions').delete().eq('id', id);
+    if (error) throw error;
+    return { id };
+  }
+  const index = subscriptions.findIndex((s) => s.id === parseInt(id));
+  if (index === -1) throw new Error('Subscription not found');
+  const [deleted] = subscriptions.splice(index, 1);
+  return deleted;
+}
+
+module.exports = {
+  getAllSubscriptions,
+  getSubscription,
+  addSubscription,
+  updateSubscription,
+  deleteSubscription,
+};

@@ -111,3 +111,20 @@ requests on `/products` endpoints the client must include the header
 `x-user-role: admin`. Each course is linked to a subscription plan through the
 `plan` field so users only see courses available for the plan from their active
 subscription.
+
+Admins can now manage user subscriptions through the `/subscriptions` API.  The
+following endpoints require an `x-user-role: admin` header:
+
+```
+PUT /subscriptions/:id     # update plan, status or dates
+DELETE /subscriptions/:id  # remove a subscription
+```
+
+All users (including admins) can retrieve subscriptions with:
+
+```
+GET /subscriptions/:id
+```
+
+These changes ensure admins share the same subscriptions as regular users and
+any modifications are immediately visible through the API.
