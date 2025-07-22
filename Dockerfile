@@ -20,6 +20,9 @@ COPY api-gateway ./api-gateway
 COPY shared ./shared
 COPY database ./database
 
+# Copiar .env para que esté disponible en la siguiente etapa
+COPY .env .env
+
 # Include built frontend assets
 COPY --from=frontend /app/frontend/dist ./api-gateway/public/dist
 
