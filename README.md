@@ -148,4 +148,20 @@ hook stored in the `RENDER_DEPLOY_HOOK` secret.
 The project can be hosted on [Render](https://render.com/) or any other cloud
 provider capable of running a Docker container. Configure the deploy hook in the
 repository secrets and every successful build of the `main` branch will publish
-a new version.
+ a new version.
+
+### Deploying to Google Cloud Run
+
+The directory `deployments/google-cloud` contains a `cloudbuild.yaml` file that
+builds the Docker image defined in `docker/Dockerfile`, pushes it to Google
+Container Registry and deploys it to **Cloud Run**. Both the Express API and the
+React front-end run from the same container.
+
+To deploy using the Google Cloud CLI:
+
+```bash
+gcloud builds submit --config deployments/google-cloud/cloudbuild.yaml .
+```
+
+Once the build completes, Cloud Run prints the service URL where the application
+is available.
