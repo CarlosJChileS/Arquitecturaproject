@@ -58,6 +58,30 @@ const Checkout = () => {
     console.log('Processing payment...', { planType, paymentMethod, formData });
   };
 
+  const handleStripePayment = async () => {
+    const res = await fetch('/payments/stripe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ planId: planType, amount: selectedPlan.price }),
+    });
+    const data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+    }
+  };
+
+  const handlePaypalPayment = async () => {
+    const res = await fetch('/payments/paypal', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ planId: planType, amount: selectedPlan.price }),
+    });
+    const data = await res.json();
+    if (data.approvalUrl) {
+      window.location.href = data.approvalUrl;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <div className="container mx-auto px-4 py-8">
@@ -263,14 +287,21 @@ const Checkout = () => {
                     <span>${selectedPlan.price}{selectedPlan.period}</span>
                   </div>
 
-                  <Button 
-                    type="submit" 
+                  <Button
+                    type="submit"
                     form="checkout-form"
                     className="w-full bg-gradient-primary hover:opacity-90 transition-opacity"
                     onClick={handleSubmit}
                   >
                     <Lock className="h-4 w-4 mr-2" />
                     Completar Suscripción
+                  </Button>
+
+                  <Button className="w-full mt-2" onClick={handleStripePayment}>
+                    Pagar con Stripe
+                  </Button>
+                  <Button className="w-full mt-2" onClick={handlePaypalPayment}>
+                    Pagar con PayPal
                   </Button>
 
                   <div className="text-center">
