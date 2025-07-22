@@ -34,7 +34,8 @@ app.use((req, res) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`LearnPro server running on port ${PORT}`);
+const port = process.env.PORT || 8080;
+process.env.PORT = port;
+app.listen(port, () => {
+  console.log(`LearnPro server running on port ${port}`);
 });

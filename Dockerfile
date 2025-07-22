@@ -31,5 +31,5 @@ ENV NODE_ENV=production
 
 COPY --from=backend /app .
 
-EXPOSE 3000
+EXPOSE 8080
 CMD ["npm", "start"]
