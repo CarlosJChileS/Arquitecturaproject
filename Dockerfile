@@ -1,25 +1,35 @@
-# Build frontend
+# -------- Build React front-end ---------
 FROM node:18-slim AS frontend
 WORKDIR /app/frontend
 COPY api-gateway/public/package*.json ./
-RUN npm install
+RUN npm ci
 COPY api-gateway/public ./
 RUN npm run build
 
-# Backend stage
+# -------- Build backend and assemble app ---------
+FROM node:18-slim AS backend
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci --omit=dev
+
+# Copy backend source
+COPY core ./core
+COPY modules ./modules
+COPY api-gateway ./api-gateway
+COPY shared ./shared
+COPY database ./database
+COPY .env .env
+
+# Include built frontend assets
+COPY --from=frontend /app/frontend/dist ./api-gateway/public/dist
+
+# -------- Production image ---------
 FROM node:18-slim
 WORKDIR /usr/src/app
-
-# Install backend dependencies
-COPY package*.json ./
-RUN npm install --production
-
-# Copy backend source code
-COPY . .
-
-# Copy frontend build
-COPY --from=frontend /app/frontend/dist api-gateway/public/dist
-
 ENV NODE_ENV=production
+
+COPY --from=backend /app .
+
 EXPOSE 3000
 CMD ["npm", "start"]
