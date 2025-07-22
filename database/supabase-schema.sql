@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS courses (
     title TEXT NOT NULL,
     description TEXT,
     category_id INTEGER REFERENCES categories(id),
+    plan_id INTEGER REFERENCES plans(id),
     price NUMERIC(10,2),
     status TEXT DEFAULT 'published',
     created_at TIMESTAMPTZ DEFAULT NOW()

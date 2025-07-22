@@ -24,4 +24,18 @@ async function addSubscription({ userId, plan, active = true }) {
   return subscription;
 }
 
-module.exports = { getAllSubscriptions, addSubscription };
+async function getActiveSubscriptionByUserId(userId) {
+  if (process.env.SUPABASE_URL) {
+    const { data, error } = await supabase
+      .from('subscriptions')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('status', 'active')
+      .single();
+    if (error) return null;
+    return data;
+  }
+  return subscriptions.find(s => s.userId === userId && s.active) || null;
+}
+
+module.exports = { getAllSubscriptions, addSubscription, getActiveSubscriptionByUserId };
