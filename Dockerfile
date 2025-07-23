@@ -8,6 +8,7 @@ RUN npm run build
 
 # -------- Build backend and assemble app ---------
 FROM node:18-slim AS backend
+ARG ENV_FILE=.env.example
 WORKDIR /app
 
 COPY package*.json ./
@@ -20,8 +21,8 @@ COPY api-gateway ./api-gateway
 COPY shared ./shared
 COPY database ./database
 
-# Copiar .env para que esté disponible en la siguiente etapa
-COPY .env .env
+# Copy default environment or provided file
+COPY ${ENV_FILE} .env
 
 # Include built frontend assets
 COPY --from=frontend /app/frontend/dist ./api-gateway/public/dist
