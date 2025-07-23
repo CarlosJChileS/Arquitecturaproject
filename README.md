@@ -1,7 +1,8 @@
 # LearnPro
 
-Simple subscription-based learning platform using a modular architecture. The project is a small
-Node.js proof of concept that exposes various feature modules and a React front-end.
+Plataforma de aprendizaje por suscripción construida con Node.js y React. El proyecto sigue una arquitectura modular donde cada dominio (autenticación, cursos, pagos, notificaciones) se implementa como un módulo independiente. Incluye una API REST y un frontend basado en Vite.
+
+La documentación completa se encuentra en la carpeta [docs](docs/), donde se incluyen el modelo C4 y las ADR que describen las decisiones de diseño.
 
 ## Structure
 
