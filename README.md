@@ -104,9 +104,6 @@ Create a `.env` file in the project root containing the following keys when runn
 - `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` – database connection information.
 - `ADMIN_ACCOUNTS` – optional `email:password` pairs for initial admin accounts.
 - `STRIPE_SECRET_KEY` – secret key used to create checkout sessions.
-- `STRIPE_WEBHOOK_SECRET` – signing secret to verify Stripe webhooks.
-
-
 See `.env.example` for an example configuration. When running the Docker container in production you can provide these variables using your orchestrator (for example Cloud Run or `docker run -e`).
 
 ## Course management
@@ -136,6 +133,9 @@ any modifications are immediately visible through the API.
 
 ## Stripe payments
 
-The `/payments/stripe` endpoint now delegates checkout session creation to a
-Supabase Edge Function. Stripe will call `/payments/stripe/webhook` for events
-using the signing secret defined in `STRIPE_WEBHOOK_SECRET`.
+The `/payments/stripe` endpoint creates a checkout session and returns the
+Stripe hosted URL. After a successful payment Stripe redirects the user back to
+`/success?session_id=...`. The frontend can then call
+`/payments/stripe/session/:sessionId` so the backend verifies the payment status
+directly with Stripe and records it in the database. No webhook endpoint is
+required.
