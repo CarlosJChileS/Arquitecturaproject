@@ -46,3 +46,11 @@ export async function loginUser(email: string, password: string) {
   }
   return data;
 }
+
+export async function getUserProgress(userId: string) {
+  const res = await fetch(`${API_BASE}/progress/${userId}`);
+  if (!res.ok) {
+    throw new Error('Failed to fetch progress');
+  }
+  return res.json();
+}
