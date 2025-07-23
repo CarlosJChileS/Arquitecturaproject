@@ -46,11 +46,54 @@ export async function loginUser(email: string, password: string) {
   }
   return data;
 }
-
-export async function getUserProgress(userId: string) {
-  const res = await fetch(`${API_BASE}/progress/${userId}`);
+export async function registerUser(fullName: string, email: string, password: string) {
+  const res = await fetch(`${API_BASE}/auth/register`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ fullName, email, password }),
+  });
+  const data = await res.json();
   if (!res.ok) {
-    throw new Error('Failed to fetch progress');
+    throw new Error(data.error || 'Failed to register');
+  }
+  return data;
+}
+
+export async function createCourse(course: { title: string; description: string; plan: string }) {
+  const res = await fetch(`${API_BASE}/products`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-user-role': 'admin',
+    },
+    body: JSON.stringify(course),
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.error || 'Failed to create course');
+  }
+  return data;
+}
+
+export async function deleteCourse(id: number) {
+  const res = await fetch(`${API_BASE}/products/${id}`, {
+    method: 'DELETE',
+    headers: { 'x-user-role': 'admin' },
+  });
+  if (!res.ok) {
+    const data = await res.json();
+    throw new Error(data.error || 'Failed to delete course');
+  }
+  return true;
+}
+
+export async function getSubscriptions() {
+  const res = await fetch(`${API_BASE}/subscriptions`);
+  if (!res.ok) {
+    throw new Error('Failed to fetch subscriptions');
+
   }
   return res.json();
 }
