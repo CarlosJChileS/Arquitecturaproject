@@ -14,6 +14,7 @@ const Checkout = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const planType = searchParams.get('plan') || 'basic';
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [formData, setFormData] = useState({
     email: '',
@@ -60,7 +61,7 @@ const Checkout = () => {
   };
 
   const handleStripePayment = async () => {
-    const res = await fetch('/payments/stripe', {
+    const res = await fetch(`${supabaseUrl}/functions/v1/stripe-payment`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ planId: planType, amount: selectedPlan.price }),
@@ -72,7 +73,7 @@ const Checkout = () => {
   };
 
   const handlePaypalPayment = async () => {
-    const res = await fetch('/payments/paypal', {
+    const res = await fetch(`${supabaseUrl}/functions/v1/paypal-payment`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ planId: planType, amount: selectedPlan.price }),

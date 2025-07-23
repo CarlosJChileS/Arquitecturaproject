@@ -93,6 +93,18 @@ npm start
 
 To use a hosted Supabase project instead, set the same environment variables to your project's URL and API key. The server will then connect to the remote backend.
 
+## Payments handled by Supabase
+
+Payment processing is delegated to Supabase Edge Functions. Create two functions named `stripe-payment` and `paypal-payment` in your project and move the logic from `modules/payments/payments.js` into them. Configure the secrets `STRIPE_SECRET_KEY`, `PAYPAL_CLIENT_ID` and `PAYPAL_CLIENT_SECRET` directly in Supabase so they are not stored in this repository. Each function should insert a record in the `payments` table once the provider returns a payment session.
+
+The React checkout page now calls these Edge Functions using the `VITE_SUPABASE_URL` variable:
+
+```ts
+fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/stripe-payment`)
+```
+
+Since payments are handled by Supabase, the Express server no longer exposes the `/payments` routes.
+
 ## Environment variables
 
 Create a `.env` file in the project root containing the following keys when running locally. You can use `.env.example` as a starting point:
@@ -100,6 +112,7 @@ Create a `.env` file in the project root containing the following keys when runn
 - `SUPABASE_URL` and `SUPABASE_ANON_KEY` – Supabase connection details.
 - `SUPABASE_SERVICE_ROLE_KEY` – service role key for privileged operations.
 - `ADMIN_EMAILS` – comma-separated list of administrator emails.
+- `VITE_SUPABASE_URL` – URL of your Supabase instance used by the frontend.
 - `PORT` – port for the API gateway (defaults to `8080`).
 - `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` – database connection information.
 - `ADMIN_ACCOUNTS` – optional `email:password` pairs for initial admin accounts.
