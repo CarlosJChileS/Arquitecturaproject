@@ -4,13 +4,16 @@ import { StatsCard } from "@/components/admin/StatsCard";
 import { DataTable } from "@/components/admin/DataTable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { 
-  Users, 
-  BookOpen, 
-  DollarSign, 
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Users,
+  BookOpen,
+  DollarSign,
   TrendingUp,
   Plus,
-  Calendar
+  Calendar,
+  LogOut
 } from "lucide-react";
 
 // Mock data
@@ -44,6 +47,18 @@ const subscriberColumns = [
 
 export default function AdminDashboard() {
   useAdminAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleLogout = () => {
+    localStorage.removeItem("admin");
+    toast({
+      title: "Sesión cerrada",
+      description: "Has cerrado sesión correctamente.",
+    });
+    navigate("/admin");
+  };
+
   return (
     <AdminLayout>
       <div className="p-8 space-y-8 animate-fade-in">
@@ -63,6 +78,10 @@ export default function AdminDashboard() {
             <Button className="gap-2 bg-gradient-primary hover:opacity-90">
               <Plus className="h-4 w-4" />
               Nuevo Curso
+            </Button>
+            <Button variant="outline" className="gap-2" onClick={handleLogout}>
+              <LogOut className="h-4 w-4" />
+              Salir
             </Button>
           </div>
         </div>
