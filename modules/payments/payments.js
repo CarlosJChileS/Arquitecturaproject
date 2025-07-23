@@ -85,17 +85,28 @@ router.post('/stripe', async (req, res) => {
 });
 
 router.post('/paypal', async (req, res) => {
-  const request = new paypal.orders.OrdersCreateRequest();
-  request.requestBody({
-    intent: 'CAPTURE',
-    purchase_units: [
-      {
-        amount: { currency_code: 'USD', value: req.body.amount },
-      },
-    ],
-  });
-
   try {
+    if (process.env.SUPABASE_URL) {
+      const { data, error } = await supabase.functions.invoke('paypal-payment', {
+        body: req.body,
+        headers: {
+          Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
+        },
+      });
+      if (error) throw error;
+      return res.json(data);
+    }
+
+    const request = new paypal.orders.OrdersCreateRequest();
+    request.requestBody({
+      intent: 'CAPTURE',
+      purchase_units: [
+        {
+          amount: { currency_code: 'USD', value: req.body.amount },
+        },
+      ],
+    });
+
     const order = await paypalClient.execute(request);
     const approve = order.result.links.find((l) => l.rel === 'approve');
     res.json({ approvalUrl: approve.href });
