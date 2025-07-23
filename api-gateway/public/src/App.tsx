@@ -16,6 +16,7 @@ import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminLogin from "./pages/admin/AdminLogin";
+import AdminRegister from "./pages/admin/AdminRegister";
 import AdminCourses from "./pages/admin/AdminCourses";
 import AdminSubscribers from "./pages/admin/AdminSubscribers";
 import AdminPlans from "./pages/admin/AdminPlans";
@@ -41,6 +42,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/admin" element={<AdminLogin />} />
+          <Route path="/admin/register" element={<AdminRegister />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/courses" element={<AdminCourses />} />
           <Route path="/admin/subscribers" element={<AdminSubscribers />} />
