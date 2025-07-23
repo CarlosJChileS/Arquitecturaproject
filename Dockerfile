@@ -22,7 +22,7 @@ COPY shared ./shared
 COPY database ./database
 
 # Copy default environment or provided file
-COPY ${ENV_FILE} .env
+COPY .env .env
 
 # Include built frontend assets
 COPY --from=frontend /app/frontend/dist ./api-gateway/public/dist
