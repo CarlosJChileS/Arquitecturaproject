@@ -1,5 +1,5 @@
 # -------- Build React front-end ---------
-FROM node:18-slim AS frontend
+FROM node:20-slim AS frontend
 WORKDIR /app/frontend
 COPY api-gateway/public/package*.json ./
 RUN npm ci
@@ -7,7 +7,7 @@ COPY api-gateway/public ./
 RUN npm run build
 
 # -------- Build backend and assemble app ---------
-FROM node:18-slim AS backend
+FROM node:20-slim AS backend
 ARG ENV_FILE=.env.example
 WORKDIR /app
 
@@ -28,7 +28,7 @@ COPY .env .env
 COPY --from=frontend /app/frontend/dist ./api-gateway/public/dist
 
 # -------- Production image ---------
-FROM node:18-slim
+FROM node:20-slim
 WORKDIR /usr/src/app
 ENV NODE_ENV=production
 
