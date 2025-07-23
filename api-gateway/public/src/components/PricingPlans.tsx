@@ -167,14 +167,6 @@ const PricingPlans = () => {
           })}
         </div>
         
-        <div className="text-center mt-12">
-          <p className="text-muted-foreground mb-4">
-            ¿Necesitas un plan personalizado para tu empresa?
-          </p>
-          <Button variant="outline" size="lg">
-            Contactar Ventas
-          </Button>
-        </div>
       </div>
     </section>
   );
