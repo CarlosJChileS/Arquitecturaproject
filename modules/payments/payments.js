@@ -15,39 +15,39 @@ const paypalEnv = new paypal.core.SandboxEnvironment(
 );
 const paypalClient = new paypal.core.PayPalHttpClient(paypalEnv);
 
-async function handleStripeWebhook(req, res) {
-  const signature = req.headers['stripe-signature'];
-  let event;
+/**
+ * Verify a Stripe checkout session after the user is redirected back from the
+ * Stripe hosted payment page. The client sends the `sessionId` received in the
+ * success URL and the backend retrieves the session from Stripe to confirm the
+ * payment status.
+ */
+async function verifyStripeSession(req, res) {
+  const { sessionId } = req.params;
   try {
-    event = stripe.webhooks.constructEvent(
-      req.body,
-      signature,
-      process.env.STRIPE_WEBHOOK_SECRET || ''
-    );
-  } catch (err) {
-    console.error('Webhook Error:', err.message);
-    return res.status(400).send(`Webhook Error: ${err.message}`);
-  }
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
 
-  if (event.type === 'checkout.session.completed') {
-    const session = event.data.object;
-    const subId = session.metadata ? session.metadata.subscription_id : null;
-    if (subId) {
-      try {
-        await addPayment({
-          subscriptionId: parseInt(subId, 10),
-          amount: session.amount_total / 100,
-          currency: session.currency.toUpperCase(),
-          provider: 'stripe',
-          status: 'paid'
-        });
-      } catch (err) {
-        console.error('Payment record error:', err.message);
+    if (session.payment_status === 'paid') {
+      const subId = session.metadata ? session.metadata.subscription_id : null;
+      if (subId) {
+        try {
+          await addPayment({
+            subscriptionId: parseInt(subId, 10),
+            amount: session.amount_total / 100,
+            currency: session.currency.toUpperCase(),
+            provider: 'stripe',
+            status: 'paid',
+          });
+        } catch (err) {
+          console.error('Payment record error:', err.message);
+        }
       }
     }
-  }
 
-  res.json({ received: true });
+    res.json({ payment_status: session.payment_status });
+  } catch (err) {
+    console.error('Stripe verify error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
 }
 
 router.post('/stripe', async (req, res) => {
@@ -105,6 +105,7 @@ router.post('/paypal', async (req, res) => {
   }
 });
 
-router.post('/stripe/webhook', handleStripeWebhook);
+router.get('/stripe/session/:sessionId', verifyStripeSession);
+
 module.exports = router;
-module.exports.handleStripeWebhook = handleStripeWebhook;
+module.exports.verifyStripeSession = verifyStripeSession;
