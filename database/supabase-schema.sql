@@ -8,6 +8,10 @@ CREATE TABLE IF NOT EXISTS users (
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     email TEXT UNIQUE NOT NULL,
     full_name TEXT,
+    avatar_url TEXT,
+    bio TEXT,
+    location TEXT,
+    website TEXT,
     role TEXT NOT NULL DEFAULT 'user',
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -41,6 +45,12 @@ CREATE TABLE IF NOT EXISTS courses (
     id SERIAL PRIMARY KEY,
     title TEXT NOT NULL,
     description TEXT,
+    image_url TEXT,
+    instructor TEXT,
+    duration TEXT,
+    students INTEGER,
+    rating NUMERIC(3,1),
+    level TEXT,
     category_id INTEGER REFERENCES categories(id),
     plan_id INTEGER REFERENCES plans(id),
     price NUMERIC(10,2),
@@ -48,10 +58,19 @@ CREATE TABLE IF NOT EXISTS courses (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Course modules
+CREATE TABLE IF NOT EXISTS modules (
+    id SERIAL PRIMARY KEY,
+    course_id INTEGER NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    duration TEXT
+);
+
 -- Lessons inside courses
 CREATE TABLE IF NOT EXISTS lessons (
     id SERIAL PRIMARY KEY,
     course_id INTEGER NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
+    module_id INTEGER REFERENCES modules(id) ON DELETE CASCADE,
     title TEXT NOT NULL,
     content_url TEXT,
     lesson_order INTEGER
