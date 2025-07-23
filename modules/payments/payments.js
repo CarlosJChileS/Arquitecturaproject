@@ -1,3 +1,4 @@
+// Deprecated: payment processing now lives in Supabase Edge Functions.
 const express = require('express');
 const router = express.Router();
 const Stripe = require('stripe');

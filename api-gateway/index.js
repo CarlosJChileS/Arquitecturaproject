@@ -15,7 +15,6 @@ const subscriptionAccess = require("../shared/middleware/subscriptionAccess");
 const authRouter = require('../modules/auth');
 const productsRouter = require('../modules/products');
 const {
-  paymentsRouter,
   subscriptionsRouter,
 } = require('../modules/payments');
 const notificationsRouter = require('../modules/notifications');
@@ -23,7 +22,6 @@ const progressRouter = require('../modules/products/progress');
 app.use("/products", subscriptionAccess, productsRouter);
 app.use("/progress", subscriptionAccess, progressRouter);
 
-app.use("/payments", paymentsRouter);
 app.use('/subscriptions', subscriptionsRouter);
 app.use('/notifications', notificationsRouter);
 app.use('/auth', authRouter);
