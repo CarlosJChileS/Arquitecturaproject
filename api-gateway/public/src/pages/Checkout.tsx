@@ -7,11 +7,12 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
-import { CreditCard, Shield, CheckCircle, Lock } from 'lucide-react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { CreditCard, Shield, CheckCircle, Lock, ChevronLeft } from 'lucide-react';
+import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const planType = searchParams.get('plan') || 'basic';
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [formData, setFormData] = useState({
@@ -88,6 +89,12 @@ const Checkout = () => {
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
+            <div className="mb-2 text-left">
+              <Button variant="ghost" onClick={() => navigate(-1)} className="inline-flex items-center">
+                <ChevronLeft className="h-4 w-4 mr-1" />
+                Volver
+              </Button>
+            </div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
               Finalizar Suscripción
             </h1>
