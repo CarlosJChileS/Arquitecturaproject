@@ -28,6 +28,7 @@ const CourseCatalog = () => {
       .then(setCourses)
       .catch((err) => console.error(err));
     getCategories()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((data) => setCategories(["Todos", ...data.map((c: any) => c.name)]))
       .catch((err) => console.error(err));
   }, []);
