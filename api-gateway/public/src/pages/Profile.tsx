@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { User, Mail, Calendar, Award, BookOpen, Trophy, Camera } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { getUser } from "@/api";
+import { getUser, getUserProgress } from "@/api";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -24,18 +24,35 @@ export default function Profile() {
     website: ""
   });
 
+  const [learningStats, setLearningStats] = useState({
+    totalEntries: 0,
+    coursesCompleted: 0,
+    currentStreak: 0,
+    skillsLearned: 0,
+  });
+
   useEffect(() => {
     async function fetchProfile() {
       try {
-        const userId = '1';
-        const data = await getUser(userId);
+        const stored = localStorage.getItem('user');
+        if (!stored) return;
+        const user = JSON.parse(stored);
+        const data = await getUser(user.id);
         setProfile({
           name: data.fullName,
           email: data.email,
-          bio: "",
+          bio: data.bio || '',
           joinDate: new Date(data.createdAt).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' }),
-          location: "",
-          website: ""
+          location: data.location || '',
+          website: data.website || ''
+        });
+        const progress = await getUserProgress(user.id);
+        const completed = progress.filter((p: any) => p.completed);
+        setLearningStats({
+          totalEntries: progress.length,
+          coursesCompleted: new Set(completed.map((c: any) => c.course_id)).size,
+          currentStreak: 0,
+          skillsLearned: completed.length,
         });
       } catch (err) {
         console.error(err);
@@ -56,12 +73,7 @@ export default function Profile() {
     { id: 3, course: "Node.js Development", completedDate: "2024-02-15", grade: "88%" },
   ];
 
-  const learningStats = {
-    totalHours: 127,
-    coursesCompleted: 8,
-    currentStreak: 15,
-    skillsLearned: 24
-  };
+
 
   const handleSave = () => {
     setIsEditing(false);
@@ -111,8 +123,8 @@ export default function Profile() {
                     <div className="text-sm text-muted-foreground">Cursos Completados</div>
                   </div>
                   <div className="space-y-1">
-                    <div className="text-2xl font-bold text-primary">{learningStats.totalHours}</div>
-                    <div className="text-sm text-muted-foreground">Horas de Estudio</div>
+                    <div className="text-2xl font-bold text-primary">{learningStats.totalEntries}</div>
+                    <div className="text-sm text-muted-foreground">Registros</div>
                   </div>
                   <div className="space-y-1">
                     <div className="text-2xl font-bold text-primary">{learningStats.currentStreak}</div>

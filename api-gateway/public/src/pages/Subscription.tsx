@@ -70,6 +70,30 @@ const Subscription = () => {
     console.log('Changing to plan:', planId);
   };
 
+  const handleStripePayment = async () => {
+    const res = await fetch('/payments/stripe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ planId: currentPlan, amount: selectedPlan.price }),
+    });
+    const data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+    }
+  };
+
+  const handlePaypalPayment = async () => {
+    const res = await fetch('/payments/paypal', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ planId: currentPlan, amount: selectedPlan.price }),
+    });
+    const data = await res.json();
+    if (data.approvalUrl) {
+      window.location.href = data.approvalUrl;
+    }
+  };
+
   const completionPercentage = (usage.coursesCompleted / usage.totalCourses) * 100;
 
   return (
@@ -157,6 +181,22 @@ const Subscription = () => {
                       </AlertDialogContent>
                     </AlertDialog>
                   </div>
+                </CardContent>
+              </Card>
+
+              {/* Payment Gateways */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Métodos de Pago</CardTitle>
+                  <CardDescription>Selecciona tu pasarela de pago</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <Button className="w-full" onClick={handleStripePayment}>
+                    Pagar con Stripe
+                  </Button>
+                  <Button className="w-full" onClick={handlePaypalPayment}>
+                    Pagar con PayPal
+                  </Button>
                 </CardContent>
               </Card>
 

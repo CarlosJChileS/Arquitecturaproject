@@ -93,6 +93,7 @@ export async function getSubscriptions() {
   const res = await fetch(`${API_BASE}/subscriptions`);
   if (!res.ok) {
     throw new Error('Failed to fetch subscriptions');
+
   }
   return res.json();
 }
