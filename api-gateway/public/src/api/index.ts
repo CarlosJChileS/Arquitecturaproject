@@ -24,6 +24,14 @@ export async function getUser(id: string) {
   return res.json();
 }
 
+export async function getCategories() {
+  const res = await fetch(`${API_BASE}/categories`);
+  if (!res.ok) {
+    throw new Error('Failed to fetch categories');
+  }
+  return res.json();
+}
+
 export async function loginUser(email: string, password: string) {
   const res = await fetch(`${API_BASE}/auth/login`, {
     method: 'POST',
