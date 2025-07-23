@@ -5,11 +5,12 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { CreditCard, Calendar, Download, Settings, AlertCircle, CheckCircle, Crown } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { CreditCard, Calendar, Download, Settings, AlertCircle, CheckCircle, Crown, ChevronLeft } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Subscription = () => {
   const [currentPlan, setCurrentPlan] = useState('premium');
+  const navigate = useNavigate();
   
   const subscription = {
     plan: 'premium',
@@ -77,6 +78,14 @@ const Subscription = () => {
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-8">
+            <Button
+              variant="ghost"
+              onClick={() => navigate(-1)}
+              className="mb-2 inline-flex items-center"
+            >
+              <ChevronLeft className="h-4 w-4 mr-1" />
+              Volver
+            </Button>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
               Mi Suscripción
             </h1>
