@@ -7,7 +7,7 @@ const {
 
 router.get('/:userId', async (req, res) => {
   try {
-    const notes = await getNotificationsByUser(parseInt(req.params.userId));
+    const notes = await getNotificationsByUser(req.params.userId);
     res.json(notes);
   } catch (err) {
     res.status(500).json({ error: err.message });

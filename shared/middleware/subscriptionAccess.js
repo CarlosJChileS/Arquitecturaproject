@@ -3,7 +3,7 @@ const subscriptions = require('../../core/domain/subscriptions');
 const supabase = require('../utils/supabaseClient');
 
 module.exports = async function (req, res, next) {
-  const userId = parseInt(req.header('x-user-id'));
+  const userId = req.header('x-user-id');
   if (process.env.SUPABASE_URL) {
     const { data, error } = await supabase
       .from('subscriptions')

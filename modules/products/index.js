@@ -12,7 +12,7 @@ const adminAccess = require('../../shared/middleware/adminAccess');
 
 router.get('/', async (req, res) => {
   try {
-    const userId = parseInt(req.header('x-user-id')); 
+    const userId = req.header('x-user-id');
     const subscription = await getActiveSubscriptionByUserId(userId);
     const plan = subscription ? subscription.plan_id || subscription.plan : undefined;
     const courses = await getAllCourses(plan);
