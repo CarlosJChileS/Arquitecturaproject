@@ -1,6 +1,7 @@
 const notifications = require('../domain/notifications');
 const supabase = require('../../shared/utils/supabaseClient');
 const resend = require('../../shared/utils/resendClient');
+const buildNotificationEmailHTML = require('../../shared/templates/notificationEmailTemplate');
 const { getUserById } = require('./usersService');
 
 async function sendEmailNotification(userId, message) {
@@ -12,7 +13,8 @@ async function sendEmailNotification(userId, message) {
         from: 'no-reply@learnpro.com',
         to: user.email,
         subject: 'LearnPro Notification',
-        text: message
+        text: message,
+        html: buildNotificationEmailHTML(message)
       });
     }
   } catch (err) {
