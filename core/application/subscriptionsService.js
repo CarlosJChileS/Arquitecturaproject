@@ -1,5 +1,6 @@
 const subscriptions = require('../domain/subscriptions');
 const supabase = require('../../shared/utils/supabaseClient');
+const { addNotification } = require('./notificationsService');
 
 async function getAllSubscriptions() {
   if (process.env.SUPABASE_URL) {
@@ -30,10 +31,12 @@ async function addSubscription({ userId, plan, active = true }) {
       .insert({ user_id: userId, plan_id: plan, status: active ? 'active' : 'inactive' })
       .single();
     if (error) throw error;
+    await addNotification({ userId, message: 'Suscripción activada' });
     return data;
   }
   const subscription = { id: subscriptions.length + 1, userId, plan, active };
   subscriptions.push(subscription);
+  await addNotification({ userId, message: 'Suscripción activada' });
   return subscription;
 }
 
@@ -64,11 +67,15 @@ async function updateSubscription(id, updates) {
       .eq('id', id)
       .single();
     if (error) throw error;
+    if (data && data.user_id) {
+      await addNotification({ userId: data.user_id, message: 'Suscripción actualizada' });
+    }
     return data;
   }
   const sub = subscriptions.find((s) => s.id === parseInt(id));
   if (!sub) throw new Error('Subscription not found');
   Object.assign(sub, updates);
+  await addNotification({ userId: sub.userId, message: 'Suscripción actualizada' });
   return sub;
 }
 
