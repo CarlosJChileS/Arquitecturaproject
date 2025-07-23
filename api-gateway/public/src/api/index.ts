@@ -15,3 +15,11 @@ export async function getCourse(id: number) {
   }
   return res.json();
 }
+
+export async function getUser(id: string) {
+  const res = await fetch(`${API_BASE}/users/${id}`);
+  if (!res.ok) {
+    throw new Error('Failed to fetch user');
+  }
+  return res.json();
+}

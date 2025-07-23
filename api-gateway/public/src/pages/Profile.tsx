@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,17 +9,40 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { User, Mail, Calendar, Award, BookOpen, Trophy, Camera } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { getUser } from "@/api";
 
 export default function Profile() {
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [profile, setProfile] = useState({
-    name: "Ana García",
-    email: "ana.garcia@email.com",
-    bio: "Passionate about technology and continuous learning. Currently specializing in web development and data science.",
-    joinDate: "Enero 2024",
-    location: "Madrid, España",
-    website: "https://anagarcia.dev"
+    name: "",
+    email: "",
+    bio: "",
+    joinDate: "",
+    location: "",
+    website: ""
   });
+
+  useEffect(() => {
+    async function fetchProfile() {
+      try {
+        const userId = '1';
+        const data = await getUser(userId);
+        setProfile({
+          name: data.fullName,
+          email: data.email,
+          bio: "",
+          joinDate: new Date(data.createdAt).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' }),
+          location: "",
+          website: ""
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetchProfile();
+  }, []);
 
   const achievements = [
     { id: 1, title: "First Course Completed", description: "Completed your first course", earned: "2024-01-15", icon: BookOpen },
@@ -48,6 +71,11 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5 pt-20">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
+        <div className="mb-4">
+          <Button variant="outline" onClick={() => navigate(-1)}>
+            ← Volver
+          </Button>
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Profile Sidebar */}
           <div className="lg:col-span-1">
