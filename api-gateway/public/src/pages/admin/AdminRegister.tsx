@@ -7,6 +7,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { GraduationCap, Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { registerUser, loginUser, getUser } from "@/api";
 
 export default function AdminRegister() {
   const [email, setEmail] = useState("");
@@ -34,23 +35,28 @@ export default function AdminRegister() {
 
     setIsLoading(true);
     try {
-      const stored = localStorage.getItem("adminAccounts");
-      const accounts = stored ? JSON.parse(stored) : [];
-      const exists = accounts.some((acc: { email: string }) => acc.email === email);
-      if (exists) {
-        setError("El email ya está registrado");
+      await registerUser("Admin", email, password);
+      const { user } = await loginUser(email, password);
+      const details = await getUser(user.id);
+      if (details.role !== "admin") {
+        setError("No tienes permisos de administrador");
         return;
       }
-      accounts.push({ email, password });
-      localStorage.setItem("adminAccounts", JSON.stringify(accounts));
-      localStorage.setItem("admin", JSON.stringify({ email, isAdminAuthenticated: true }));
+      localStorage.setItem(
+        "admin",
+        JSON.stringify({ email: details.email, isAdminAuthenticated: true })
+      );
       toast({
         title: "¡Cuenta creada exitosamente!",
         description: "Has iniciado sesión como administrador.",
       });
       navigate("/admin/dashboard");
-    } catch {
-      setError("Error al crear la cuenta");
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Error al crear la cuenta");
+      }
     } finally {
       setIsLoading(false);
     }

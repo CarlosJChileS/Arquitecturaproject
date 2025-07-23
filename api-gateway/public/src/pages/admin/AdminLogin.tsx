@@ -7,6 +7,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { GraduationCap, Eye, EyeOff } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { loginUser, getUser } from "@/api";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -35,29 +36,27 @@ export default function AdminLogin() {
     setError("");
 
     try {
-      // Simple client-side credential check since Supabase has been removed
-      const stored = localStorage.getItem("adminAccounts");
-      const accounts = stored ? JSON.parse(stored) : [];
-      const match = accounts.find(
-        (acc: { email: string; password: string }) =>
-          acc.email === email && acc.password === password
-      );
-
-      if (email === "admin@example.com" && password === "password" || match) {
-        localStorage.setItem(
-          "admin",
-          JSON.stringify({ email, isAdminAuthenticated: true })
-        );
-        toast({
-          title: "¡Bienvenido!",
-          description: "Has iniciado sesión como administrador.",
-        });
-        navigate("/admin/dashboard");
-      } else {
-        setError("Credenciales inválidas");
+      const { user } = await loginUser(email, password);
+      const details = await getUser(user.id);
+      if (details.role !== "admin") {
+        setError("No tienes permisos de administrador");
+        return;
       }
+      localStorage.setItem(
+        "admin",
+        JSON.stringify({ email: details.email, isAdminAuthenticated: true })
+      );
+      toast({
+        title: "¡Bienvenido!",
+        description: "Has iniciado sesión como administrador.",
+      });
+      navigate("/admin/dashboard");
     } catch (err) {
-      setError("Error al iniciar sesión. Inténtalo de nuevo.");
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Error al iniciar sesión. Inténtalo de nuevo.");
+      }
     } finally {
       setIsLoading(false);
     }
