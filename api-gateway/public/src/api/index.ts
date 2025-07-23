@@ -97,6 +97,7 @@ export async function getSubscriptions() {
   }
   return res.json();
 }
+// Added for profile page to retrieve a user's course progress
 
 export async function getUserProgress(userId: string) {
   const res = await fetch(`${API_BASE}/progress/${userId}`);
