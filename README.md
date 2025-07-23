@@ -70,6 +70,9 @@ docker build -t learnpro .
 docker run -p 8080:8080 learnpro
 ```
 
+The Dockerfile copies `.env.example` by default. Provide a custom file with
+`--build-arg ENV_FILE=.env` if needed.
+
 The application will be available on `http://localhost:8080`.
 
 ## Using Supabase locally
@@ -92,7 +95,7 @@ To use a hosted Supabase project instead, set the same environment variables to 
 
 ## Environment variables
 
-Create a `.env` file in the project root containing the following keys when running locally:
+Create a `.env` file in the project root containing the following keys when running locally. You can use `.env.example` as a starting point:
 
 - `SUPABASE_URL` and `SUPABASE_ANON_KEY` – Supabase connection details.
 - `SUPABASE_SERVICE_ROLE_KEY` – service role key for privileged operations.
@@ -102,7 +105,7 @@ Create a `.env` file in the project root containing the following keys when runn
 - `ADMIN_ACCOUNTS` – optional `email:password` pairs for initial admin accounts.
 
 
-See `.env` for an example configuration. When running the Docker container in production you can provide these variables using your orchestrator (for example Cloud Run or `docker run -e`).
+See `.env.example` for an example configuration. When running the Docker container in production you can provide these variables using your orchestrator (for example Cloud Run or `docker run -e`).
 
 ## Course management
 
