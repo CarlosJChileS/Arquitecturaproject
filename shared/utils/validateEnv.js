@@ -8,7 +8,10 @@ function validateEnv() {
     'DB_NAME',
     'DB_USER',
     'DB_PASSWORD',
-    'ADMIN_ACCOUNTS'
+    'ADMIN_ACCOUNTS',
+    'STRIPE_SECRET_KEY',
+    'PAYPAL_CLIENT_ID',
+    'PAYPAL_CLIENT_SECRET'
   ];
   for (const v of requiredVars) {
     if (!process.env[v]) {

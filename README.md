@@ -104,6 +104,7 @@ Create a `.env` file in the project root containing the following keys when runn
 - `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` – database connection information.
 - `ADMIN_ACCOUNTS` – optional `email:password` pairs for initial admin accounts.
 - `STRIPE_SECRET_KEY` – secret key used to create checkout sessions.
+- `PAYPAL_CLIENT_ID` and `PAYPAL_CLIENT_SECRET` – credentials for the PayPal REST API.
 See `.env.example` for an example configuration. When running the Docker container in production you can provide these variables using your orchestrator (for example Cloud Run or `docker run -e`).
 
 ## Course management
@@ -139,3 +140,18 @@ Stripe hosted URL. After a successful payment Stripe redirects the user back to
 `/payments/stripe/session/:sessionId` so the backend verifies the payment status
 directly with Stripe and records it in the database. No webhook endpoint is
 required.
+
+## PayPal edge function
+
+The project includes a Supabase Edge Function called `paypal-payment`. Deploy it
+with:
+
+```bash
+supabase functions deploy paypal-payment
+```
+
+The function requires the `PAYPAL_CLIENT_ID` and `PAYPAL_CLIENT_SECRET`
+environment variables. When `SUPABASE_URL` is set, the API gateway invokes this
+function through Supabase to create an order and returns the approval URL. If no
+Supabase backend is configured, the API falls back to the local PayPal SDK
+implementation.
