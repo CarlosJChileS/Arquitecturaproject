@@ -7,6 +7,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { GraduationCap, Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { loginUser, getUser } from "@/api";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -22,26 +23,29 @@ const Login = () => {
     setIsLoading(true);
     setError("");
 
-    // Simulación de login - en una app real esto conectaría a tu backend
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simular delay
-
-      if (email === "demo@learnpro.com" && password === "demo123") {
-        localStorage.setItem("user", JSON.stringify({ 
-          email, 
-          name: "Usuario Demo",
-          isAuthenticated: true 
-        }));
-        toast({
-          title: "¡Bienvenido!",
-          description: "Has iniciado sesión correctamente.",
-        });
-        navigate("/dashboard");
-      } else {
-        setError("Credenciales incorrectas. Usa demo@learnpro.com / demo123");
-      }
+      const { user } = await loginUser(email, password);
+      const details = await getUser(user.id);
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          email: details.email,
+          name: details.fullName,
+          role: details.role,
+          isAuthenticated: true,
+        })
+      );
+      toast({
+        title: "¡Bienvenido!",
+        description: "Has iniciado sesión correctamente.",
+      });
+      navigate("/dashboard");
     } catch (err) {
-      setError("Error al iniciar sesión. Inténtalo de nuevo.");
+      if (err instanceof Error) {
+        setError(err.message || "Credenciales incorrectas");
+      } else {
+        setError("Credenciales incorrectas");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -150,9 +154,6 @@ const Login = () => {
           </form>
         </Card>
 
-        <div className="mt-6 text-center text-sm text-muted-foreground">
-          <p>Demo: demo@learnpro.com / demo123</p>
-        </div>
       </div>
     </div>
   );

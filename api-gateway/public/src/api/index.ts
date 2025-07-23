@@ -23,3 +23,18 @@ export async function getUser(id: string) {
   }
   return res.json();
 }
+
+export async function loginUser(email: string, password: string) {
+  const res = await fetch(`${API_BASE}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, password }),
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.error || 'Failed to login');
+  }
+  return data;
+}
