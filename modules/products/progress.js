@@ -7,7 +7,7 @@ const {
 
 router.get('/:userId', async (req, res) => {
   try {
-    const userProgress = await getUserProgress(parseInt(req.params.userId));
+    const userProgress = await getUserProgress(req.params.userId);
     res.json(userProgress);
   } catch (err) {
     res.status(500).json({ error: err.message });
