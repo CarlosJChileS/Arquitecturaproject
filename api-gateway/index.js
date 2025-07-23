@@ -20,12 +20,14 @@ const {
 } = require('../modules/payments');
 const notificationsRouter = require('../modules/notifications');
 const progressRouter = require('../modules/products/progress');
+const usersRouter = require('../modules/users');
 app.use("/products", subscriptionAccess, productsRouter);
 app.use("/progress", subscriptionAccess, progressRouter);
 
 app.use("/payments", paymentsRouter);
 app.use('/subscriptions', subscriptionsRouter);
 app.use('/notifications', notificationsRouter);
+app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 
 // Send React app for any other route
