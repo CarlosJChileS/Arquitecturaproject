@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Users, Star, Play } from "lucide-react";
-import { getCourses } from "../api";
+import { getCourses, getCategories } from "../api";
 
 interface Course {
   id: number;
@@ -21,14 +21,16 @@ interface Course {
 
 const CourseCatalog = () => {
   const [courses, setCourses] = useState<Course[]>([]);
+  const [categories, setCategories] = useState<string[]>(["Todos"]);
 
   useEffect(() => {
     getCourses()
       .then(setCourses)
       .catch((err) => console.error(err));
+    getCategories()
+      .then((data) => setCategories(["Todos", ...data.map((c: any) => c.name)]))
+      .catch((err) => console.error(err));
   }, []);
-
-  const categories = ["Todos", "Desarrollo Web", "Data Science", "Diseño", "Marketing", "IA", "Finanzas"];
   return (
     <section id="cursos" className="py-20 bg-background">
       <div className="container mx-auto px-4">

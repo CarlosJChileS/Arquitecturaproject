@@ -24,8 +24,11 @@ const {
 const notificationsRouter = require('../modules/notifications');
 const progressRouter = require('../modules/products/progress');
 const usersRouter = require('../modules/users');
+const categoriesRouter = require('../modules/categories');
 app.use("/products", subscriptionAccess, productsRouter);
 app.use("/progress", subscriptionAccess, progressRouter);
+
+app.use('/categories', categoriesRouter);
 
 app.use("/payments", paymentsRouter);
 app.use('/subscriptions', subscriptionsRouter);
