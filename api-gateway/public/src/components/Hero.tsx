@@ -1,7 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { Play, ArrowRight, Users, BookOpen, Award } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const Hero = () => {
+  interface UserInfo {
+    name: string;
+    email?: string;
+  }
+
+  const [user, setUser] = useState<UserInfo | null>(null);
+
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
   return (
     <section className="relative py-20 md:py-32 bg-gradient-hero overflow-hidden">
       {/* Background decorations */}
@@ -31,14 +45,24 @@ const Hero = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 mb-10">
-              <Button size="lg" className="bg-white text-primary hover:bg-gray-100 transition-colors group">
-                <Play className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-                Comenzar Gratis
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-primary transition-colors">
-                Ver Demo
-              </Button>
+              {user ? (
+                <Button size="lg" className="bg-white text-primary hover:bg-gray-100 transition-colors group">
+                  <Play className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                  Continuar con el curso
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              ) : (
+                <>
+                  <Button size="lg" className="bg-white text-primary hover:bg-gray-100 transition-colors group">
+                    <Play className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                    Comenzar Gratis
+                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                  <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-primary transition-colors">
+                    Ver Demo
+                  </Button>
+                </>
+              )}
             </div>
             
             <div className="grid grid-cols-3 gap-6 text-white">
