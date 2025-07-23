@@ -3,6 +3,11 @@ require('../shared/utils/validateEnv')();
 const express = require('express');
 const path = require('path');
 const app = express();
+const { handleStripeWebhook } = require('../modules/payments');
+
+// Raw body parser for Stripe webhooks
+app.post('/payments/stripe/webhook', express.raw({ type: 'application/json' }), handleStripeWebhook);
+
 app.use(express.json());
 
 // Serve built frontend if available

@@ -103,6 +103,8 @@ Create a `.env` file in the project root containing the following keys when runn
 - `PORT` – port for the API gateway (defaults to `8080`).
 - `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` – database connection information.
 - `ADMIN_ACCOUNTS` – optional `email:password` pairs for initial admin accounts.
+- `STRIPE_SECRET_KEY` – secret key used to create checkout sessions.
+- `STRIPE_WEBHOOK_SECRET` – signing secret to verify Stripe webhooks.
 
 
 See `.env.example` for an example configuration. When running the Docker container in production you can provide these variables using your orchestrator (for example Cloud Run or `docker run -e`).
@@ -131,3 +133,9 @@ GET /subscriptions/:id
 
 These changes ensure admins share the same subscriptions as regular users and
 any modifications are immediately visible through the API.
+
+## Stripe payments
+
+The `/payments/stripe` endpoint now delegates checkout session creation to a
+Supabase Edge Function. Stripe will call `/payments/stripe/webhook` for events
+using the signing secret defined in `STRIPE_WEBHOOK_SECRET`.
