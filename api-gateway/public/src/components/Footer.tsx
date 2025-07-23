@@ -1,7 +1,17 @@
 import { GraduationCap, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import { getCategories } from "../api";
 
 const Footer = () => {
+  const [categories, setCategories] = useState<string[]>([]);
+
+  useEffect(() => {
+    getCategories()
+      .then((data) => setCategories(data.map((c: any) => c.name)))
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
     <footer className="bg-foreground text-background py-16">
       <div className="container mx-auto px-4">
@@ -69,31 +79,13 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold text-lg mb-6">Categorías</h3>
             <ul className="space-y-3">
-              <li>
-                <a href="#" className="text-background/80 hover:text-background transition-colors">
-                  Desarrollo Web
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-background/80 hover:text-background transition-colors">
-                  Data Science
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-background/80 hover:text-background transition-colors">
-                  Diseño UX/UI
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-background/80 hover:text-background transition-colors">
-                  Marketing Digital
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-background/80 hover:text-background transition-colors">
-                  Inteligencia Artificial
-                </a>
-              </li>
+              {categories.map((name) => (
+                <li key={name}>
+                  <a href="#" className="text-background/80 hover:text-background transition-colors">
+                    {name}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
