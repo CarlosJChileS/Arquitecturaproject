@@ -97,3 +97,11 @@ export async function getSubscriptions() {
   }
   return res.json();
 }
+
+export async function getUserProgress(userId: string) {
+  const res = await fetch(`${API_BASE}/progress/${userId}`);
+  if (!res.ok) {
+    throw new Error('Failed to fetch user progress');
+  }
+  return res.json();
+}
