@@ -3,6 +3,7 @@ require('../shared/utils/validateEnv')();
 const express = require('express');
 const path = require('path');
 const app = express();
+const checkSupabaseConnection = require('../shared/utils/checkSupabaseConnection');
 
 
 
@@ -44,6 +45,13 @@ app.use((req, res) => {
 
 const port = process.env.PORT || 8080;
 process.env.PORT = port;
+checkSupabaseConnection().then(ok => {
+  if (ok) {
+    console.log('Supabase connection verified');
+  } else {
+    console.error('Failed to connect to Supabase');
+  }
+});
 app.listen(port, () => {
   console.log(`LearnPro server running on port ${port}`);
 });
