@@ -107,7 +107,8 @@ Create a `.env` file in the project root containing the following keys when runn
 - `SUPABASE_SERVICE_ROLE_KEY` – service role key for privileged operations.
 - `ADMIN_EMAILS` – comma-separated list of administrator emails.
 - `PORT` – port for the API gateway (defaults to `8080`).
-- `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` – database connection information.
+- `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_PORT` – database connection information.
+- `DATABASE_URL` – optional full connection string for the Supabase transaction pooler.
 - `ADMIN_ACCOUNTS` – optional `email:password` pairs for initial admin accounts.
 - `STRIPE_SECRET_KEY` – secret key used to create checkout sessions.
 - `PAYPAL_CLIENT_ID` and `PAYPAL_CLIENT_SECRET` – credentials for the PayPal REST API.

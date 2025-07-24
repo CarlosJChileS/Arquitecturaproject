@@ -1,8 +1,18 @@
 const courses = require('../domain/courses');
 const supabase = require('../../shared/utils/supabaseClient');
+const db = require('../../shared/utils/db');
 
 async function getAllCourses(plan) {
-  if (process.env.SUPABASE_URL) {
+  if (process.env.DATABASE_URL || process.env.DB_HOST) {
+    let query = 'SELECT * FROM courses';
+    const params = [];
+    if (plan) {
+      params.push(plan);
+      query += ' WHERE plan_id = $1';
+    }
+    const { rows } = await db.query(query, params);
+    return rows;
+  } else if (process.env.SUPABASE_URL) {
     let query = supabase.from('courses').select('*');
     if (plan) query = query.eq('plan_id', plan);
     const { data, error } = await query;
@@ -13,7 +23,10 @@ async function getAllCourses(plan) {
 }
 
 async function getCourseById(id) {
-  if (process.env.SUPABASE_URL) {
+  if (process.env.DATABASE_URL || process.env.DB_HOST) {
+    const { rows } = await db.query('SELECT * FROM courses WHERE id = $1', [id]);
+    return rows[0] || null;
+  } else if (process.env.SUPABASE_URL) {
     const { data, error } = await supabase.from('courses').select('*').eq('id', id).single();
     if (error) return null;
     return data;
@@ -22,7 +35,13 @@ async function getCourseById(id) {
 }
 
 async function addCourse({ title, description, plan }) {
-  if (process.env.SUPABASE_URL) {
+  if (process.env.DATABASE_URL || process.env.DB_HOST) {
+    const { rows } = await db.query(
+      'INSERT INTO courses (title, description, plan_id) VALUES ($1,$2,$3) RETURNING *',
+      [title, description, plan]
+    );
+    return rows[0];
+  } else if (process.env.SUPABASE_URL) {
     const { data, error } = await supabase
       .from('courses')
       .insert({ title, description, plan_id: plan })
@@ -36,7 +55,13 @@ async function addCourse({ title, description, plan }) {
 }
 
 async function updateCourse(id, { title, description, plan }) {
-  if (process.env.SUPABASE_URL) {
+  if (process.env.DATABASE_URL || process.env.DB_HOST) {
+    const { rows } = await db.query(
+      'UPDATE courses SET title=$1, description=$2, plan_id=$3 WHERE id=$4 RETURNING *',
+      [title, description, plan, id]
+    );
+    return rows[0];
+  } else if (process.env.SUPABASE_URL) {
     const { data, error } = await supabase
       .from('courses')
       .update({ title, description, plan_id: plan })
@@ -54,7 +79,10 @@ async function updateCourse(id, { title, description, plan }) {
 }
 
 async function deleteCourse(id) {
-  if (process.env.SUPABASE_URL) {
+  if (process.env.DATABASE_URL || process.env.DB_HOST) {
+    await db.query('DELETE FROM courses WHERE id=$1', [id]);
+    return true;
+  } else if (process.env.SUPABASE_URL) {
     const { error } = await supabase.from('courses').delete().eq('id', id);
     if (error) throw error;
     return true;
