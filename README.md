@@ -47,6 +47,11 @@ npm start
 
 The server runs on port `8080` by default.
 
+### API documentation
+
+When the server is running you can explore all endpoints using Swagger UI at
+`http://localhost:8080/api-docs`.
+
 ## Running the front-end
 
 The React client lives inside `api-gateway/public`. To run it in development mode:
