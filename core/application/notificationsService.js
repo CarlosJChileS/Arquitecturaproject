@@ -1,5 +1,6 @@
 const notifications = require('../domain/notifications');
 const supabase = require('../../shared/utils/supabaseClient');
+const db = require('../../shared/utils/db');
 const resend = require('../../shared/utils/resendClient');
 const buildNotificationEmailHTML = require('../../shared/templates/notificationEmailTemplate');
 const { getUserById } = require('./usersService');
@@ -23,7 +24,10 @@ async function sendEmailNotification(userId, message) {
 }
 
 async function getNotificationsByUser(userId) {
-  if (process.env.SUPABASE_URL) {
+  if (process.env.DATABASE_URL || process.env.DB_HOST) {
+    const { rows } = await db.query('SELECT * FROM notifications WHERE user_id=$1', [userId]);
+    return rows;
+  } else if (process.env.SUPABASE_URL) {
     const { data, error } = await supabase
       .from('notifications')
       .select('*')
@@ -35,7 +39,14 @@ async function getNotificationsByUser(userId) {
 }
 
 async function addNotification({ userId, message }) {
-  if (process.env.SUPABASE_URL) {
+  if (process.env.DATABASE_URL || process.env.DB_HOST) {
+    const { rows } = await db.query(
+      'INSERT INTO notifications (user_id, message) VALUES ($1,$2) RETURNING *',
+      [userId, message]
+    );
+    await sendEmailNotification(userId, message);
+    return rows[0];
+  } else if (process.env.SUPABASE_URL) {
     const { data, error } = await supabase
       .from('notifications')
       .insert({ user_id: userId, message })

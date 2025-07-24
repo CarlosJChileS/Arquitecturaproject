@@ -1,8 +1,15 @@
 const payments = require('../domain/payments');
 const supabase = require('../../shared/utils/supabaseClient');
+const db = require('../../shared/utils/db');
 
 async function addPayment({ subscriptionId, amount, currency = 'USD', provider, status }) {
-  if (process.env.SUPABASE_URL) {
+  if (process.env.DATABASE_URL || process.env.DB_HOST) {
+    const { rows } = await db.query(
+      'INSERT INTO payments (subscription_id, amount, currency, provider, status) VALUES ($1,$2,$3,$4,$5) RETURNING *',
+      [subscriptionId, amount, currency, provider, status]
+    );
+    return rows[0];
+  } else if (process.env.SUPABASE_URL) {
     const { data, error } = await supabase
       .from('payments')
       .insert({
