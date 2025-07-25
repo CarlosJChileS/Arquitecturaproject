@@ -1,18 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const {
-  getAllCategories,
-  getCategoryById,
-  addCategory,
-  updateCategory,
-  deleteCategory
-} = require('../../core/application/categoriesService');
+  getAllPlans,
+  getPlanById,
+  addPlan,
+  updatePlan,
+  deletePlan
+} = require('../../core/application/plansService');
 const adminAccess = require('../../shared/middleware/adminAccess');
 
 router.get('/', async (req, res) => {
   try {
-    const categories = await getAllCategories();
-    res.json(categories);
+    const plans = await getAllPlans();
+    res.json(plans);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -20,8 +20,8 @@ router.get('/', async (req, res) => {
 
 router.post('/', adminAccess, async (req, res) => {
   try {
-    const category = await addCategory(req.body);
-    res.status(201).json(category);
+    const plan = await addPlan(req.body);
+    res.status(201).json(plan);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -29,9 +29,9 @@ router.post('/', adminAccess, async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const category = await getCategoryById(req.params.id);
-    if (!category) return res.status(404).json({ error: 'Not found' });
-    res.json(category);
+    const plan = await getPlanById(req.params.id);
+    if (!plan) return res.status(404).json({ error: 'Not found' });
+    res.json(plan);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -39,9 +39,9 @@ router.get('/:id', async (req, res) => {
 
 router.put('/:id', adminAccess, async (req, res) => {
   try {
-    const category = await updateCategory(req.params.id, req.body);
-    if (!category) return res.status(404).json({ error: 'Not found' });
-    res.json(category);
+    const plan = await updatePlan(req.params.id, req.body);
+    if (!plan) return res.status(404).json({ error: 'Not found' });
+    res.json(plan);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -49,7 +49,7 @@ router.put('/:id', adminAccess, async (req, res) => {
 
 router.delete('/:id', adminAccess, async (req, res) => {
   try {
-    const success = await deleteCategory(req.params.id);
+    const success = await deletePlan(req.params.id);
     if (!success) return res.status(404).json({ error: 'Not found' });
     res.json({ success: true });
   } catch (err) {
