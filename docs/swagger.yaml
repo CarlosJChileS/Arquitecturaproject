@@ -160,6 +160,72 @@ paths:
       responses:
         '200':
           description: Category list
+    post:
+      summary: Create category
+      parameters:
+        - in: header
+          name: x-user-role
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Category created
+  /categories/{id}:
+    get:
+      summary: Get category by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Category details
+        '404':
+          description: Category not found
+    put:
+      summary: Update category
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+        - in: header
+          name: x-user-role
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Category updated
+    delete:
+      summary: Delete category
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+        - in: header
+          name: x-user-role
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Category deleted
   /users/{id}:
     get:
       summary: Get user by id
@@ -299,3 +365,75 @@ paths:
       responses:
         '201':
           description: Notification created
+  /plans:
+    get:
+      summary: List plans
+      responses:
+        '200':
+          description: Plan list
+    post:
+      summary: Create plan
+      parameters:
+        - in: header
+          name: x-user-role
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Plan created
+  /plans/{id}:
+    get:
+      summary: Get plan
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Plan data
+        '404':
+          description: Plan not found
+    put:
+      summary: Update plan
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+        - in: header
+          name: x-user-role
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Plan updated
+    delete:
+      summary: Delete plan
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+        - in: header
+          name: x-user-role
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Plan deleted

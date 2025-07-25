@@ -133,8 +133,25 @@ DELETE /subscriptions/:id  # remove a subscription
 All users (including admins) can retrieve subscriptions with:
 
 ```
-GET /subscriptions/:id
+  GET /subscriptions/:id
 ```
+
+## Plan management
+
+Plans define the subscription options available for users. The API now exposes
+CRUD operations under `/plans`. Creating, updating or deleting a plan requires
+the `x-user-role: admin` header:
+
+```
+GET /plans            # list plans
+POST /plans           # create plan
+GET /plans/:id        # get plan by id
+PUT /plans/:id        # update plan
+DELETE /plans/:id     # remove plan
+```
+
+Similarly, categories can be created and edited through `/categories` using the
+same admin header.
 
 These changes ensure admins share the same subscriptions as regular users and
 any modifications are immediately visible through the API.
