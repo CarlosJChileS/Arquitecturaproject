@@ -36,8 +36,8 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', adminAccess, async (req, res) => {
   try {
-    const { title, description, plan } = req.body;
-    const course = await addCourse({ title, description, plan });
+    const { title, description, plan, intro_video_url } = req.body;
+    const course = await addCourse({ title, description, plan, intro_video_url });
     res.status(201).json(course);
   } catch (err) {
     res.status(500).json({ error: err.message });
