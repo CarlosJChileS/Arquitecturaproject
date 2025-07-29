@@ -77,6 +77,8 @@ paths:
                   type: string
                 plan:
                   type: string
+                intro_video_url:
+                  type: string
       responses:
         '201':
           description: Course created
@@ -112,6 +114,9 @@ paths:
           application/json:
             schema:
               type: object
+              properties:
+                intro_video_url:
+                  type: string
       responses:
         '200':
           description: Course updated

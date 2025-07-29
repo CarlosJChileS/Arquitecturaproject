@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS courses (
     title TEXT NOT NULL,
     description TEXT,
     image_url TEXT,
+    intro_video_url TEXT,
     instructor TEXT,
     duration TEXT,
     students INTEGER,
